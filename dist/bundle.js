@@ -47,7 +47,7 @@
 	"use strict";
 	
 	var m = function m(num) {
-	  return num * 2;
+	  return num * 20;
 	};
 	console.log(m(24));
 

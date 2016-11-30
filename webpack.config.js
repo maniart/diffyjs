@@ -6,11 +6,12 @@ module.exports = {
   entry: `${__dirname}/src/index.js`,
   output: {
     path: `${__dirname}/dist`,
+    publicPath: '/dist/',
     filename: 'bundle.js',
   },
   devtool: 'source-map',
   plugins: [
-    new LiveReloadPlugin({port: 35729})
+    new LiveReloadPlugin({ port: 35729 })
   ],
   module: {
     eslint: {
@@ -34,4 +35,4 @@ module.exports = {
     ]
   }
 
-}
+};
