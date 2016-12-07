@@ -1,4 +1,14 @@
-import EventEmitter from 'eventemitter3';
+import ReadableStream from 'readable-stream';
 
-const m = num => num * 20;
-console.log(m(24));
+export default class Diffy {
+  constructor(props) {
+    console.log('Aw yis');
+    this.stream = new ReadableStream();
+  }
+
+  createStream() {
+    console.log('create stream here');
+  }
+}
+
+
