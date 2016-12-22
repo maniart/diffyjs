@@ -25,7 +25,7 @@ export default {
   ],
   module: {
     loaders: [
-      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
+      {test: /\.js$/, exclude: /node_modules/, loaders: ['babel']},
       {test: /(\.css)$/, loaders: ['style', 'css']}
     ]
   }

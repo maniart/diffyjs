@@ -11,7 +11,7 @@
     "build": "node -r babel-register node_modules/.bin/webpack",
     "build:lib": "npm run build -- --config webpack.config.js",
     "build:demo": "npm run build -- --config webpack.config.demo.js",
-    "lint": "node_modules/.bin/esw webpack.config.* src tools demo",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools demo/src",
     "lint:watch": "npm run lint -- --watch",
     "test": "mocha --reporter progress tools/test-setup.js \"src/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
