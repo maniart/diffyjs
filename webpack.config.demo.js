@@ -7,13 +7,13 @@ export default {
   noInfo: false,
   entry: [
     'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
-    path.resolve(__dirname, 'src/index')
+    path.resolve(__dirname, 'demo/src/index')
   ],
   target: 'web',
   output: {
-    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
+    path: path.resolve(__dirname, 'demo/dist'), // Note: Physical files are only output by the production build task `npm run build`.
     publicPath: '/',
-    filename: 'lib.bundle.js'
+    filename: 'demo.bundle.js'
     // library: 'diffy'
   },
   devServer: {

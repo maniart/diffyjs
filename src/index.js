@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import ReadableStream from 'readable-stream';
 
 export default class Diffy {
