@@ -2,6 +2,7 @@
 
 import ReadableStream from 'readable-stream';
 import requestAnimFrame from './raf';
+import getUserMedia from './getusermedia';
 
 
 export default class Diffy {
@@ -21,5 +22,7 @@ const loop = () => {
 };
 
 loop();
+
+console.log(getUserMedia);
 
 
