@@ -2,9 +2,7 @@
 
 import express from 'express';
 import path from 'path';
-import webpack from 'webpack';
 import open from 'open';
-import config from '../webpack.config.demo';
 
 const app = express();
 const port = 4000;
@@ -15,11 +13,19 @@ app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));
 
-app.use(require('webpack-hot-middleware')(compiler));
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../demo/index.html'));
 });
+
+app.get('/bundle.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../demo/dist/demo.bundle.js'));
+});
+
+// app.get('/', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../demo/index.html'));
+// });
+
 
 app.listen(port, (err) => {
   if (err) {
