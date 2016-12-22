@@ -3,6 +3,13 @@
 import ReadableStream from 'readable-stream';
 import requestAnimFrame from './raf';
 import capture from './capture';
+import createOnceLog from './oncelog';
+
+
+/*
+  logger instances
+*/
+const onceLog_1 = createOnceLog();
 
 /*
   constraints object for getUserMedia
@@ -26,12 +33,12 @@ export default class Diffy {
   }
 }
 
-// const loop = () => {
-//   console.log(new Date().getSeconds());
-//   requestAnimFrame(loop);
-// };
+const loop = () => {
+  onceLog_1('Loop is running.');
+  requestAnimFrame(loop);
+};
 
-// loop();
+loop();
 
 console.log(capture(constraints));
 
