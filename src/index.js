@@ -2,7 +2,7 @@ import ReadableStream from 'readable-stream';
 
 export default class Diffy {
   constructor(props) {
-    console.log('Aw yis');
+    this.foo = props;
     this.stream = new ReadableStream();
   }
 
@@ -10,5 +10,6 @@ export default class Diffy {
     console.log('create stream here');
   }
 }
+console.log('hi')
 
 

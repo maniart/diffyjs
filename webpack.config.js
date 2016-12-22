@@ -1,38 +1,31 @@
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const path = require('path');
-const webpack = require('webpack');
+import webpack from 'webpack';
+import path from 'path';
 
-module.exports = {
-  entry: `${__dirname}/src/index.js`,
+export default {
+  debug: true,
+  devtool: 'inline-source-map',
+  noInfo: false,
+  entry: [
+    'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
+    path.resolve(__dirname, 'src/index')
+  ],
+  target: 'web',
   output: {
-    path: `${__dirname}/dist`,
-    publicPath: '/dist/',
-    filename: 'bundle.js',
+    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
+    publicPath: '/',
+    filename: 'bundle.js'
   },
-  devtool: 'source-map',
+  devServer: {
+    contentBase: path.resolve(__dirname, 'src')
+  },
   plugins: [
-    new LiveReloadPlugin({ port: 35729 })
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   module: {
-    eslint: {
-      configFile: './.eslintrc'
-    },
-    preLoaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        exclude: /node_modules/
-      }
-    ],
     loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        presets: ['es2015'],
-        plugins: ['transform-object-rest-spread']
-      }
+      {test: /\.js$/, include: path.join(__dirname, 'src'), loaders: ['babel']},
+      {test: /(\.css)$/, loaders: ['style', 'css']}
     ]
   }
-
 };
