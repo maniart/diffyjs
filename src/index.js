@@ -2,8 +2,18 @@
 
 import ReadableStream from 'readable-stream';
 import requestAnimFrame from './raf';
-import getUserMedia from './getusermedia';
+import capture from './capture';
 
+/*
+  constraints object for getUserMedia
+*/
+const constraints = {
+  audio: false,
+  video: {
+    width: 260,
+    height: 200
+  }
+};
 
 export default class Diffy {
   constructor(props) {

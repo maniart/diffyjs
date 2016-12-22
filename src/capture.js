@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable no-console */
 /*
   shim getUserMedia with a Promise api
   source: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
@@ -35,4 +36,14 @@ if(navigator.mediaDevices.getUserMedia === undefined) {
   navigator.mediaDevices.getUserMedia = getUserMedia;
 }
 
-export default getUserMedia;
+/*
+  capture from camera
+  returns objectUrl
+ */
+const capture = (constraints) => {
+  return navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => window.URL.createObjectURL(stream))
+    .catch(({ name, message }) => console.error(`${name} : ${message}`));
+}
+
+export default capture;
