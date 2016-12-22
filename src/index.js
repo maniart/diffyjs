@@ -26,13 +26,13 @@ export default class Diffy {
   }
 }
 
-const loop = () => {
-  console.log(new Date().getSeconds());
-  requestAnimFrame(loop);
-};
+// const loop = () => {
+//   console.log(new Date().getSeconds());
+//   requestAnimFrame(loop);
+// };
 
-loop();
+// loop();
 
-console.log(getUserMedia);
+console.log(capture(constraints));
 
 
