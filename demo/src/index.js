@@ -1,4 +1,5 @@
-import Diffy from '../../dist/bundle';
+/* eslint-disable no-console */
 
-const message = 'Hello World';
-console.log(message, Diffy);
+const foo = () => 'demo time';
+
+console.log(foo());
