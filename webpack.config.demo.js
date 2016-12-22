@@ -17,7 +17,7 @@ export default {
     // library: 'diffy'
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'src')
+    contentBase: path.resolve(__dirname, 'demo/src')
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
