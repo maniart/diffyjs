@@ -6,7 +6,7 @@ export default {
   devtool: 'inline-source-map',
   noInfo: false,
   entry: [
-    'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
+    // 'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
     path.resolve(__dirname, 'demo/src/index')
   ],
   target: 'web',
@@ -20,8 +20,8 @@ export default {
     contentBase: path.resolve(__dirname, 'demo/src')
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    // new webpack.HotModuleReplacementPlugin(),
+    // new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [
