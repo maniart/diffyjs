@@ -4,7 +4,7 @@
   utility function to log only once
   useful for logging in loops
 */
-const createOnceLog = () => {
+export const createOnceLog = () => {
   let counter = 0;
   return function onceLog() {
     if(counter < 1) {
@@ -14,4 +14,8 @@ const createOnceLog = () => {
   }
 }
 
-export default createOnceLog;
+/*
+  utility function for getting DOM references
+  return DOM Object
+*/
+export const $ = (selector) => document.querySelector(selector);
