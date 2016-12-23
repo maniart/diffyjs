@@ -53,29 +53,33 @@ const constraints = {
   }
 };
 
-const VERSION = '1.0.0';
-const inctanceCount = 0;
+// const VERSION = '1.0.0';
+// const inctanceCount = 0;
 
-const create = () => {
-  console.log('Create diffy');
-}
-
-export default create;
-
-// const diffy = {
-//   VERSION: '1.0.0',
-//   instanceCount: 0,
-//   createDiffy() {
-//     if (instanceCount !== 0) {
-//       throw new Error('It seems like an instance of diffy has already been created in this page.');
-//     }
-//     this.instanceCount += 1;
-//     console.log('Yay! Diffy Making!');
-
-//   }
+// const create = () => {
+//   console.log('Create diffy');
 // }
 
-// export default diffy;
+// export default create;
+
+let instanceCount = 0;
+
+const VERSION = '1.0.0';
+
+const create = () => {
+  console.log('Create is called');
+  if (instanceCount !== 0) {
+    throw new Error('It seems like an instance of diffy has already been created in this page.');
+  }
+  instanceCount += 1;
+};
+
+const diffy = {
+  VERSION: VERSION,
+  create: create
+};
+
+export default diffy;
 
 // export default class Diffy {
 //   constructor(props) {

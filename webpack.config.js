@@ -4,33 +4,98 @@ import path from 'path';
 /*
   conditionally set webpack env variable
   used to differntiate production / development builds
-  values are: `dev` & `build`
+  values are: `dev` & `dist`
 */
-const env = process.env.WEBPACK_ENV;
+const ENV = process.env.WEBPACK_ENV;
 
-
-let libraryName = 'diffy';
-let outputFile = `${libraryName}.js`;
-
-let entry  = [
+/*
+  Define `entry` array.
+  Based on `ENV`, we will conditionally extend it properly.
+*/
+let entry = [];
+let devAndDistEntry = [
   path.resolve(__dirname, 'src/index.js')
 ];
+let devEntry = [
+  'webpack-hot-middleware/client?reload=true'
+];
+let demoEntry = [
+  path.resolve(__dirname, 'demo/src/index')
+];
 
+/*
+  Define `output` object.
+  Based on `ENV`, we will conditionally extend it properly.
+*/
+let output = {
+  publicPath: '/'
+};
+let devAndDistOutput = {
+  path: path.resolve(__dirname, '/dist'),
+  library: 'diffy',
+  libraryTarget: 'umd'
+};
+let devOutput = {
+  filename: 'diffy.js'
+};
+let distOutput = {
+  filename: 'diffy.min.js'; //todo minify dist output
+};
+let demoOutput = {
+  filename: 'demo.min.js',//todo minify demo output
+  path: path.resolve(__dirname, 'demo/dist')
+};
+
+/*
+  Define the es6 loader configuration object.
+  Based on `ENV`, we will conditionally extend it properly.
+*/
+let es6LoaderConfig = {
+  test: /\.js$/,
+  loaders: ['babel']
+};
+let devAndDistEs6LoaderConfig = {
+  include: path.resolve(__dirname, 'src')
+};
+let demoEs6LoaderConfig = {
+  exclude: /node_modules/
+};
+
+/*
+  Define `plugins` array.
+  Based on ENV, we will conditionally extend it properly.
+*/
 let plugins = [];
 let devPlugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 ];
 
-if(env === 'dev') {
-  plugins = [...plugins, ...devPlugins];
+/*
+  Read the `ENV` and construct webpack configurations accordingly.
+*/
+switch(ENV) {
+  case 'dev':
+  case 'dist':
+    entry = [...entry, ...devAndDistEntry];
+    output = Object.assign(output, devAndDistOutput);
+    es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
+  case 'dev':
+    entry = [...entry, ...devEntry];
+    output = Object.assign(output, devOutput);
+    plugins = [plugins, ...devPlugins];
+  case 'dist':
+    output = Object.assign(output, distOutput);
+  case 'demo':
+    entry = [...entry, ...demoEntry];
+    output Object.assign(output, demoOutput);
+    es6LoaderConfig = Object.assign(es6LoaderConfig, demoEs6LoaderConfig);
+  default:
+    // Use `dist` case by default
+    entry = [...entry, ...devAndDistEntry];
+    output = Object.assign(output, devAndDistOutput);
+    es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
 }
-
-
-// if building for development, include hot reloading middleware
-// if (env === 'dev') {
-//   entry.push('webpack-hot-middleware/client?reload=true');
-// }
 
 console.log('___________________ env: ', env, entry);
 
@@ -38,24 +103,14 @@ export default {
   debug: true,
   devtool: 'source-map',
   noInfo: false,
-  entry: entry,
+  entry,
   target: 'web',
-  output: {
-    path: `${__dirname}/dist`, // Note: Physical files are only output by the production build task `npm run build`.
-    publicPath: '/',
-    filename: 'lib.bundle.js',
-    library: 'diffy',
-    libraryTarget: 'umd'
-  },
-  target: 'web',
+  output,
   devServer: {
     contentBase: path.resolve(__dirname, 'src')
   },
-  plugins: plugins,
+  plugins,
   module: {
-    loaders: [
-      {test: /\.js$/, include: path.resolve(__dirname, 'src'), loaders: ['babel']},
-      {test: /(\.css)$/, loaders: ['style', 'css']}
-    ]
+    loaders: [es6LoaderConfig]
   }
 };
