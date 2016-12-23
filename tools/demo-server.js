@@ -11,14 +11,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../demo/index.html'));
 });
 
-app.get('/demo.bundle.js', (req, res) => {
+app.get('/demo.min.js', (req, res) => {
   res.sendFile(path.join(__dirname, '../demo/dist/demo.bundle.js'));
 });
-
-// app.get('/', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../demo/index.html'));
-// });
-
 
 app.listen(port, (err) => {
   if (err) {

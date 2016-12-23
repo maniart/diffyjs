@@ -3,8 +3,8 @@ import path from 'path';
 
 /*
   conditionally set webpack env variable
-  used to differntiate production / development builds
-  values are: `dev` & `dist`
+  used to differntiate production / development / demo builds
+  values are: `dev`, `dist` or `demo`
 */
 const ENV = process.env.WEBPACK_ENV;
 
@@ -55,10 +55,10 @@ let es6LoaderConfig = {
   loaders: ['babel']
 };
 let devAndDistEs6LoaderConfig = {
-  include: path.resolve(__dirname, 'src')
+  include: path.resolve(__dirname, 'src'),
 };
 let demoEs6LoaderConfig = {
-  exclude: /node_modules/
+  exclude: [/node_modules/, /bower_components/]
 };
 
 /*
@@ -76,9 +76,9 @@ let devPlugins = [
 */
 switch(ENV) {
   case 'dev':
-    entry = [...entry, ...devAndDistEntry, ...devEntry];
+    entry = [...entry, ...devEntry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput, devOutput);
-    plugins = [plugins, ...devPlugins];
+    plugins = [...plugins, ...devPlugins];
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
     break;
   case 'dist':
