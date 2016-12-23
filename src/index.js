@@ -75,8 +75,8 @@ const create = () => {
 };
 
 const diffy = {
-  VERSION: VERSION,
-  create: create
+  VERSION,
+  create
 };
 
 export default diffy;

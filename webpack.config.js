@@ -13,13 +13,13 @@ const ENV = process.env.WEBPACK_ENV;
   Based on `ENV`, we will conditionally extend it properly.
 */
 let entry = [];
-let devAndDistEntry = [
+const devAndDistEntry = [
   path.resolve(__dirname, 'src/index.js')
 ];
-let devEntry = [
+const devEntry = [
   'webpack-hot-middleware/client?reload=true'
 ];
-let demoEntry = [
+const demoEntry = [
   path.resolve(__dirname, 'demo/src/index')
 ];
 
@@ -30,18 +30,18 @@ let demoEntry = [
 let output = {
   publicPath: '/'
 };
-let devAndDistOutput = {
+const devAndDistOutput = {
   path: path.resolve(__dirname, 'dist'),
   library: 'diffy',
   libraryTarget: 'umd'
 };
-let devOutput = {
+const devOutput = {
   filename: 'diffy.js'
 };
-let distOutput = {
+const distOutput = {
   filename: 'diffy.min.js' //todo minify dist output
 };
-let demoOutput = {
+const demoOutput = {
   filename: 'demo.min.js',//todo minify demo output
   path: path.resolve(__dirname, 'demo/dist')
 };
@@ -54,10 +54,10 @@ let es6LoaderConfig = {
   test: /\.js$/,
   loaders: ['babel']
 };
-let devAndDistEs6LoaderConfig = {
+const devAndDistEs6LoaderConfig = {
   include: path.resolve(__dirname, 'src'),
 };
-let demoEs6LoaderConfig = {
+const demoEs6LoaderConfig = {
   exclude: [/node_modules/, /bower_components/]
 };
 
@@ -66,7 +66,7 @@ let demoEs6LoaderConfig = {
   Based on ENV, we will conditionally extend it properly.
 */
 let plugins = [];
-let devPlugins = [
+const devPlugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 ];
@@ -97,13 +97,6 @@ switch(ENV) {
     output = Object.assign(output, devAndDistOutput);
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
 }
-
-console.log('___ env: ', ENV);
-console.log('___ entry: ', entry);
-console.log('___ output: ', output);
-console.log('___ plugins: ', plugins);
-console.log('___ es6LoaderConfig: ', es6LoaderConfig);
-
 
 export default {
   debug: true,
