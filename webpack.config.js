@@ -31,7 +31,7 @@ let output = {
   publicPath: '/'
 };
 let devAndDistOutput = {
-  path: path.resolve(__dirname, '/dist'),
+  path: path.resolve(__dirname, 'dist'),
   library: 'diffy',
   libraryTarget: 'umd'
 };
@@ -39,7 +39,7 @@ let devOutput = {
   filename: 'diffy.js'
 };
 let distOutput = {
-  filename: 'diffy.min.js'; //todo minify dist output
+  filename: 'diffy.min.js' //todo minify dist output
 };
 let demoOutput = {
   filename: 'demo.min.js',//todo minify demo output
@@ -76,20 +76,21 @@ let devPlugins = [
 */
 switch(ENV) {
   case 'dev':
+    entry = [...entry, ...devAndDistEntry, ...devEntry];
+    output = Object.assign(output, devAndDistOutput, devOutput);
+    plugins = [plugins, ...devPlugins];
+    es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
+    break;
   case 'dist':
     entry = [...entry, ...devAndDistEntry];
-    output = Object.assign(output, devAndDistOutput);
+    output = Object.assign(output, devAndDistOutput, distOutput);
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
-  case 'dev':
-    entry = [...entry, ...devEntry];
-    output = Object.assign(output, devOutput);
-    plugins = [plugins, ...devPlugins];
-  case 'dist':
-    output = Object.assign(output, distOutput);
+    break;
   case 'demo':
     entry = [...entry, ...demoEntry];
-    output Object.assign(output, demoOutput);
+    output = Object.assign(output, demoOutput);
     es6LoaderConfig = Object.assign(es6LoaderConfig, demoEs6LoaderConfig);
+    break;
   default:
     // Use `dist` case by default
     entry = [...entry, ...devAndDistEntry];
