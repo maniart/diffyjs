@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/demo.min.js', (req, res) => {
-  res.sendFile(path.join(__dirname, '../demo/dist/demo.bundle.js'));
+  res.sendFile(path.join(__dirname, '../demo/dist/demo.min.js'));
 });
 
 app.listen(port, (err) => {
