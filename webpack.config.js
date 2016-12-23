@@ -97,7 +97,12 @@ switch(ENV) {
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
 }
 
-console.log('___________________ env: ', env, entry);
+console.log('___ env: ', ENV);
+console.log('___ entry: ', entry);
+console.log('___ output: ', output);
+console.log('___ plugins: ', plugins);
+console.log('___ es6LoaderConfig: ', es6LoaderConfig);
+
 
 export default {
   debug: true,
