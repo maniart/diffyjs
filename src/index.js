@@ -43,7 +43,7 @@ const create = ({ resolution: { x: resolutionX, y: resolutionY } }) => {
   if (instanceExists) {
     throw new Error('It seems like an instance of diffy has already been created in this page.');
   }
-  instanceExists true;
+  instanceExists: true;
 };
 
 const diffy = {

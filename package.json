@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf dist/ demo/dist",
     "start": "npm-run-all --parallel serve:dev lint:watch",
-    "demo": "npm run build & npm run serve:demo",
+    "demo": "run-s build serve:demo",
     "serve:dev": "export WEBPACK_ENV=dev; node_modules/.bin/babel-node tools/dev-server.js",
     "serve:demo": "node_modules/.bin/babel-node tools/demo-server.js",
     "build": "run-s build:dist build:demo",
