@@ -4,6 +4,7 @@
   "description": "A client-side JS motion detection library",
   "main": "dist/lib.js",
   "scripts": {
+    "clean": "rm -rf dist/ demo/dist",
     "start": "npm-run-all --parallel serve:dev lint:watch",
     "demo": "npm run build & npm run serve:demo",
     "serve:dev": "export WEBPACK_ENV=dev; node_modules/.bin/babel-node tools/dev-server.js",

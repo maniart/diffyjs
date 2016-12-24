@@ -5,46 +5,31 @@ import requestAnimFrame from './raf';
 import capture from './capture';
 import { createOnceLog, $ } from './utils';
 
+/* allow only one instance per webpage */
+let instanceExists = false;
 
-/*
-  logger instances
-*/
+/* version */
+const VERSION = '1.0.0';
+
+/* logger instances */
 const onceLog_1 = createOnceLog();
 
-/*
-
-*/
+/* */
 const currentImageData = null;
 
-/*
-
-*/
+/**/
 const previousImageData = null;
 
-/*
-
-*/
+/**/
 const $debug = $('#diffy-debug');
 
-/*
-
-*/
+/**/
 const $toggle = $('#diffy-toggle');
 
-/*
-
-*/
+/**/
 const $video = $('#diffy-video');
 
-/*
-
-*/
-
-
-
-/*
-  constraints object for getUserMedia
-*/
+/* constraints object for getUserMedia */
 const constraints = {
   audio: false,
   video: {
@@ -53,25 +38,12 @@ const constraints = {
   }
 };
 
-// const VERSION = '1.0.0';
-// const inctanceCount = 0;
-
-// const create = () => {
-//   console.log('Create diffy');
-// }
-
-// export default create;
-
-let instanceCount = 0;
-
-const VERSION = '1.0.0';
-
-const create = () => {
-  console.log('Create is called');
-  if (instanceCount !== 0) {
+const create = ({ resolution: { x: resolutionX, y: resolutionY } }) => {
+  console.log('Create is called', resolutionY, resolutionX);
+  if (instanceExists) {
     throw new Error('It seems like an instance of diffy has already been created in this page.');
   }
-  instanceCount += 1;
+  instanceExists true;
 };
 
 const diffy = {
