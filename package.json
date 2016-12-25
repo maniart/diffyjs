@@ -46,8 +46,5 @@
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "1.6.1",
     "webpack-hot-middleware": "2.10.0"
-  },
-  "dependencies": {
-    "readable-stream": "^2.2.2"
   }
 }

@@ -19,3 +19,10 @@ export const createOnceLog = () => {
   return DOM Object
 */
 export const $ = (selector) => document.querySelector(selector);
+
+/*
+  bitwise Math.round
+  returns number
+*/
+export const round = (number) => (number + .5) >> 0;
+

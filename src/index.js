@@ -1,9 +1,13 @@
 /* eslint-disable no-console */
 
-import ReadableStream from 'readable-stream';
+// import ReadableStream from 'readable-stream';
 import requestAnimFrame from './raf';
 import capture from './capture';
-import { createOnceLog, $ } from './utils';
+import {
+  createOnceLog,
+  $,
+  round
+} from './utils';
 
 /* allow only one instance per webpage */
 let instanceExists = false;
@@ -29,6 +33,73 @@ const $toggle = $('#diffy-toggle');
 /**/
 const $video = $('#diffy-video');
 
+/**/
+const $rawCanvas = $('#diffy-raw-canvas');
+
+/* */
+const rawCtx = $rawCanvas.getContext('2d');
+
+/* */
+const rawWidth = $rawCanvas.width;
+
+/* */
+const rawHeight = $rawHeight.height;
+
+/* */
+const $blendCanvas = $('#diffy-blend-canvas');
+
+/* */
+const blendCtx = $blendCanvas.getContext('2d');
+
+/* */
+const blendWidth = $blendCanvas.width;
+
+/* */
+const blendHeight = $blendCanvas.height;
+
+/* */
+const blendImageData = blendCtx.getImageData(0, 0, blendWidth, blendHeight);
+
+/* */
+const createDebugView = (className) => {
+  const container = document.createElement('div');
+  container.className = className;
+  const video = document.createElement('video');
+  video.className = 'debug--video';
+  const rawCanvas = document.createElement('canvas');
+  rawCanvas.className = 'debug--raw-canvas';
+  const blendCanvas = document.createElement('div');
+  blendCanvas.className = 'debug--blend-canvas';
+
+  const header = document.createElement('div');
+  header.className = 'debug--header';
+  const title = document.createElement('h6');
+  title.className = 'debug--title';
+  title.innerText = 'diffy debug view';
+  const toggle = document.createElement('span');
+  toggle.innerText = '-';
+  header.appendChild(toggle);
+  header.appendChild(title);
+
+  container.appendChild(header);
+  container.appendChild(video);
+  container.appendChild(rawCanvas);
+  container.appendChild(blendCanvas);
+
+  document.body.appendChild('container');
+};
+
+/* */
+const toVideo = () => {
+
+}
+
+/* */
+const toCanvas = () => {
+
+};
+
+
 /* constraints object for getUserMedia */
 const constraints = {
   audio: false,
@@ -38,20 +109,35 @@ const constraints = {
   }
 };
 
-const create = ({ resolution: { x: resolutionX, y: resolutionY } }) => {
-  console.log('Create is called', resolutionY, resolutionX);
+export const create = ({
+  debug = false,
+  debugViewClassName = 'diffy--debug-view',
+  resolution: {
+    x: resolutionX,
+    y: resolutionY
+  }
+}) => {
+
   if (instanceExists) {
     throw new Error('It seems like an instance of diffy has already been created in this page.');
   }
-  instanceExists: true;
+
+
+  if(!window) {
+    throw new Error('Diffy is meant for use in the browser environment.');
+  }
+
+  if (debug) {
+    createDebugView();
+  }
+
+  instanceExists = true;
 };
 
-const diffy = {
+export default {
   VERSION,
   create
-};
-
-export default diffy;
+}
 
 // export default class Diffy {
 //   constructor(props) {
