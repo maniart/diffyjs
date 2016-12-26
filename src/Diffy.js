@@ -3,7 +3,7 @@ export default class Diffy {
     tickFn,
     captureFn,
     debug = false,
-    containerClassname = 'diffy--debug-view',
+    containerClassName = 'diffy--debug-view',
     resolution: { x, y }
   }) {
 
@@ -17,7 +17,7 @@ export default class Diffy {
     this.resolutionY = y;
 
     this.debug = debug;
-    this.containerClassname = containerClassname;
+    this.containerClassName = containerClassName;
 
     this.constraints = {
       audio: false,
@@ -30,8 +30,10 @@ export default class Diffy {
     console.log('tickFn: ', this.tickFn);
     console.log('captureFn: ', this.captureFn);
     console.log('debug: ', this.debug);
-    console.log('className: ', this.containerClassname);
+    console.log('className: ', this.containerClassName);
     console.log('resolution: ', this.resolutionX, this.resolutionY);
+
+    window.addEventListener('load', this.init.bind(this))
 
   }
 
@@ -50,47 +52,13 @@ export default class Diffy {
   }
 
   init() {
-    function doInit() {
-      console.log('DOM ready. Init...');
-    }
-
-    window.addEventListener('load', doInit);
+    console.log('DOM ready. Init...');
+    this.createElements(this.containerClassName);
   }
 
-  createElements() {
+  createElements(containerClassName) {
     const container = document.createElement('div');
-    container.className = className;
-
-    const video = document.createElement('video');
-    video.className = 'debug--video';
-
-    const rawCanvas = document.createElement('canvas');
-    rawCanvas.className = 'debug--raw-canvas';
-
-    const blendCanvas = document.createElement('div');
-    blendCanvas.className = 'debug--blend-canvas';
-
-    const header = document.createElement('div');
-    header.className = 'debug--header';
-
-    const title = document.createElement('h6');
-    title.className = 'debug--title';
-    title.innerText = 'diffy debug view';
-
-    const toggle = document.createElement('span');
-    toggle.innerText = '-';
-    header.appendChild(toggle);
-    header.appendChild(title);
-
-    container.appendChild(header);
-    container.appendChild(video);
-    container.appendChild(rawCanvas);
-    container.appendChild(blendCanvas);
-  }
-
-  createDebugView() {
-    const container = document.createElement('div');
-    container.className = className;
+    container.className = containerClassName;
 
     const video = document.createElement('video');
     video.className = 'debug--video';
@@ -120,6 +88,7 @@ export default class Diffy {
 
     document.body.appendChild(container);
   }
+
 
   static get VERSION() {
     return '1.0.0';
