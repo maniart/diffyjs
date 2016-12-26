@@ -1,8 +1,17 @@
+
 export default class Diffy {
   constructor({
     tickFn = () => {},
     captureFn = () => {},
+    captureConfig = {
+      audio: false,
+      video: {
+        width: 130,
+        height: 100
+      }
+    },
     debug = false,
+    sourceDimensions = { w: 130, h: 100 },
     onTick = (values) => {},
     onMotion = (values) => {},
     sensitivity = 0.5,
@@ -10,7 +19,7 @@ export default class Diffy {
     resolution = { x: 10, y: 5 }
   }) {
 
-    this.tickFn = tickFn;
+    this.tickFn = tickFn.bind(window);
     this.captureFn = captureFn;
 
     this.currentImageData = null;
@@ -24,74 +33,122 @@ export default class Diffy {
     this.debug = debug;
     this.containerClassName = containerClassName;
 
-    this.constraints = {
-      audio: false,
-      video: {
-        width: 260,
-        height: 200
-      }
-    };
+    this.captureConfig = captureConfig;
 
-    console.log('tickFn: ', this.tickFn);
-    console.log('captureFn: ', this.captureFn);
-    console.log('debug: ', this.debug);
-    console.log('className: ', this.containerClassName);
-    console.log('resolution: ', this.resolutionX, this.resolutionY);
+    this.sourceWidth = sourceDimensions.w;
+    this.sourceHeight = sourceDimensions.h;
 
-    window.addEventListener('load', this.init.bind(this))
 
-  }
+    // console.log('tickFn: ', this.tickFn);
+    // console.log('captureFn: ', this.captureFn);
+    // console.log('debug: ', this.debug);
+    // console.log('className: ', this.containerClassName);
+    // console.log('resolution: ', this.resolutionX, this.resolutionY);
 
-  toVideo() {
+
+
+    window.addEventListener('load', this.init.bind(this));
 
   }
 
-  toCanvas() {
+  toVideo(blob, videoEl) {
+    // piping blob to video element
+    videoEl.src = blob;
+  }
 
+  toCanvas(video, canvas) {
+    // piping video to canvas
+    canvas
+      .getContext('2d')
+      .drawImage(video, 0, 0, canvas.width, canvas.height);
   }
 
 
+  mirror(canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
+    return canvas;
+  }
 
-  tick() {
-    requestAnimFrame(this.tick);
+  compare(frame1, frame2) {
+    const length = frame1.length;
+    const data1 = frame1.data;
+    const data2 = frame2.data;
+
+    const buffer = new ArrayBuffer(length);
+
+  }
+
+  /*
+    blend two consecutive frames
+    returns imageData
+  */
+  blend(canvas) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    this.currentImageData = ctx.getImageData(0, 0, width, height);
+    this.previousImageData = this.previousImageData || ctx.getImageData(0, 0, width, height);
+    this.compare(currentImageData, previousImageData);
+  }
+
+  loop() {
+    this.toCanvas(this.videoEl, this.rawCanvasEl);
+    this.tickFn(this.loop.bind(this));
   }
 
   init() {
+    // const loop = this.loop.bind(this);
     console.log('DOM ready. Init...');
     this.createElements(this.containerClassName);
+    this.captureFn(this.captureConfig).then((blob) => {
+      [this.rawCanvasEl, this.blendCanvasEl].forEach(this.mirror);
+      this.toVideo(blob, this.videoEl);
+      this.loop();
+    });
   }
 
   createElements(containerClassName) {
-    const container = document.createElement('div');
-    container.className = containerClassName;
+    this.containerEl = document.createElement('div');
+    this.containerEl.className = containerClassName;
 
-    const video = document.createElement('video');
-    video.className = 'debug--video';
+    this.videoEl = document.createElement('video');
+    this.videoEl.className = 'debug--video';
+    this.videoEl.setAttribute('autoplay', '');
+    this.videoEl.width = this.sourceWidth;
+    this.videoEl.height = this.sourceHeight;
 
-    const rawCanvas = document.createElement('canvas');
-    rawCanvas.className = 'debug--raw-canvas';
+    this.rawCanvasEl = document.createElement('canvas');
+    this.rawCanvasEl.className = 'debug--raw-canvas';
+    this.rawCanvasEl.width = this.sourceWidth;
+    this.rawCanvasEl.height = this.sourceHeight;
 
-    const blendCanvas = document.createElement('div');
-    blendCanvas.className = 'debug--blend-canvas';
+    this.blendCanvasEl = document.createElement('canvas');
+    this.blendCanvasEl.className = 'debug--blend-canvas';
+    this.blendCanvasEl.width = this.sourceWidth;
+    this.blendCanvasEl.height = this.sourceHeight;
 
-    const header = document.createElement('div');
-    header.className = 'debug--header';
 
-    const title = document.createElement('h6');
-    title.className = 'debug--title';
-    title.innerText = 'diffy debug view';
+    this.headerEl = document.createElement('div');
+    this.headerEl.className = 'debug--header';
 
-    const toggle = document.createElement('span');
-    toggle.innerText = '-';
-    header.appendChild(toggle);
-    header.appendChild(title);
+    this.titleEl = document.createElement('h6');
+    this.titleEl.className = 'debug--title';
+    this.titleEl.innerText = 'Diffy debug view';
 
-    container.appendChild(header);
-    container.appendChild(video);
-    container.appendChild(rawCanvas);
-    container.appendChild(blendCanvas);
+    this.toggleEl = document.createElement('span');
+    this.toggleEl.innerText = '-';
 
-    document.body.appendChild(container);
+    this.headerEl.appendChild(this.toggleEl);
+    this.headerEl.appendChild(this.titleEl);
+
+    this.containerEl.appendChild(this.headerEl);
+    this.containerEl.appendChild(this.videoEl);
+    this.containerEl.appendChild(this.rawCanvasEl);
+    this.containerEl.appendChild(this.blendCanvasEl);
+
+    document.body.appendChild(this.containerEl);
   }
 
 
