@@ -15,6 +15,10 @@ app.get('/demo.min.js', (req, res) => {
   res.sendFile(path.join(__dirname, '../demo/dist/demo.min.js'));
 });
 
+app.get('/*.worker.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../demo/dist/*.worker.js'));
+});
+
 app.listen(port, (err) => {
   if (err) {
     console.log('Error: ', err);

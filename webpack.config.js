@@ -70,6 +70,9 @@ const devPlugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin()
 ];
+const distPlugins = [
+  new webpack.optimize.UglifyJsPlugin()
+];
 
 /*
   Read the `ENV` and construct webpack configurations accordingly.
@@ -84,6 +87,7 @@ switch(ENV) {
   case 'dist':
     entry = [...entry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput, distOutput);
+    plugins = [...plugins, ...distPlugins];
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
     break;
   case 'demo':
@@ -110,6 +114,8 @@ export default {
   },
   plugins,
   module: {
-    loaders: [es6LoaderConfig]
+    loaders: [
+      es6LoaderConfig
+    ]
   }
 };

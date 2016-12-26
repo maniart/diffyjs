@@ -1,3 +1,4 @@
+import Worker from 'worker-loader!./worker';
 
 export default class Diffy {
   constructor({
@@ -37,6 +38,9 @@ export default class Diffy {
 
     this.sourceWidth = sourceDimensions.w;
     this.sourceHeight = sourceDimensions.h;
+
+    this.worker = new Worker;
+
 
 
     // console.log('tickFn: ', this.tickFn);
@@ -99,14 +103,17 @@ export default class Diffy {
   }
 
   init() {
-    // const loop = this.loop.bind(this);
     console.log('DOM ready. Init...');
+    this.worker.addEventListener('message', (message) => {
+      console.log(message);
+    });
     this.createElements(this.containerClassName);
     this.captureFn(this.captureConfig).then((blob) => {
       [this.rawCanvasEl, this.blendCanvasEl].forEach(this.mirror);
       this.toVideo(blob, this.videoEl);
       this.loop();
     });
+    this.worker.postMessage({bar: 'foo'});
   }
 
   createElements(containerClassName) {
