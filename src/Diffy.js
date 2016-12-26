@@ -1,10 +1,13 @@
 export default class Diffy {
   constructor({
-    tickFn,
-    captureFn,
+    tickFn = () => {},
+    captureFn = () => {},
     debug = false,
+    onTick = (values) => {},
+    onMotion = (values) => {},
+    sensitivity = 0.5,
     containerClassName = 'diffy--debug-view',
-    resolution: { x, y }
+    resolution = { x: 10, y: 5 }
   }) {
 
     this.tickFn = tickFn;
@@ -13,8 +16,10 @@ export default class Diffy {
     this.currentImageData = null;
     this.previousImageData = null;
 
-    this.resolutionX = x;
-    this.resolutionY = y;
+    this.resolutionX = resolution.x;
+    this.resolutionY = resolution.y;
+
+    this.sensitivity = sensitivity;
 
     this.debug = debug;
     this.containerClassName = containerClassName;

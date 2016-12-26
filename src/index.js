@@ -10,7 +10,7 @@ import {
 } from './utils';
 
 
-export const create = ({ resolution = {x: 10, y: 5} }) => {
+export const create = ({ resolution }) => {
   console.log('Create called');
   return Diffy.create({
     tickFn: requestAnimFrame,
