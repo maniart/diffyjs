@@ -71,11 +71,11 @@ const devPlugins = [
   new webpack.NoErrorsPlugin()
 ];
 const distPlugins = [
-  // new webpack.optimize.UglifyJsPlugin({
-  //   compress: {
-  //     warnings: false
-  //   }
-  // })
+  new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    }
+  })
 ];
 
 /*
@@ -117,12 +117,6 @@ export default {
     contentBase: path.resolve(__dirname, 'src')
   },
   plugins,
-  // worker: {
-  //   output: {
-  //     filename: "diff.worker.js",
-  //     chunkFilename: "[id].diff.worker.js"
-  //   }
-  // },
   module: {
     loaders: [
       es6LoaderConfig
