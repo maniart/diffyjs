@@ -1,5 +1,3 @@
-const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity }}) => {
-  this.postMessage('hello');
+onmessage = function(event) {
+  postMessage({hi: 'hello'});
 }
-
-this.addEventListener('message', createDiffBuffer);

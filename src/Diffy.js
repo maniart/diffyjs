@@ -1,4 +1,4 @@
-import Worker from 'worker-loader!./worker';
+import Worker from 'worker-loader?inline!./worker';
 
 export default class Diffy {
   constructor({
@@ -41,6 +41,7 @@ export default class Diffy {
 
     this.worker = new Worker;
 
+    this.initialized = false;
 
 
     // console.log('tickFn: ', this.tickFn);
@@ -114,6 +115,7 @@ export default class Diffy {
       this.loop();
     });
     this.worker.postMessage({bar: 'foo'});
+    this.initialized = true;
   }
 
   createElements(containerClassName) {
