@@ -46,6 +46,7 @@ export default class Diffy {
 
     this.debug = debug;
     this.containerClassName = containerClassName;
+    this.debugViewCollapsed = false;
 
     this.captureConfig = captureConfig;
 
@@ -165,7 +166,6 @@ export default class Diffy {
     this.blendCanvasEl.width = this.sourceWidth;
     this.blendCanvasEl.height = this.sourceHeight;
 
-
     this.headerEl = document.createElement('header');
     this.headerEl.className = 'header';
 
@@ -176,6 +176,20 @@ export default class Diffy {
     this.toggleEl = document.createElement('span');
     this.toggleEl.className = 'toggle';
     this.toggleEl.innerText = '-';
+
+    this.headerEl.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      [this.videoEl, this.rawCanvasEl, this.blendCanvasEl].forEach((el) => {
+        if (this.debugViewCollapsed) {
+          el.classList.remove('hidden');
+          this.toggleEl.innerText = '-';
+        } else {
+          el.classList.add('hidden');
+          this.toggleEl.innerText = '+';
+        }
+      });
+      this.debugViewCollapsed = !this.debugViewCollapsed;
+    });
 
     this.headerEl.appendChild(this.toggleEl);
     this.headerEl.appendChild(this.titleEl);
@@ -205,6 +219,7 @@ export default class Diffy {
         width: 100%;
         background-color: #000;
         font-size: 16px;
+        cursor: pointer;
       }
       .${containerClassName} .title {
         display: inline;
@@ -214,12 +229,16 @@ export default class Diffy {
       }
       .${containerClassName} .toggle {
         padding: 5px;
-        cursor: pointer;
       }
 
       .${containerClassName} .view {
         padding: 5px;
       }
+
+      .${containerClassName} .view.hidden {
+        display: none;
+      }
+
     `;
     node.innerHTML = styles;
     document.body.appendChild(node);
