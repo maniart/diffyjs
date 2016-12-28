@@ -26,3 +26,12 @@ export const $ = (selector) => document.querySelector(selector);
 */
 export const round = (number) => (number + .5) >> 0;
 
+
+export const abs = (value) => (value ^ (value >> 31)) - (value >> 31);
+
+
+/*
+  polarize pixel values based on value and threshold
+  returns 0 or 0XFF
+*/
+export const polarize = (value, threshold) => (value > threshold) ? 0xFF0033 : 0XFF;

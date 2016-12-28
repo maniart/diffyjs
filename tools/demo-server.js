@@ -18,7 +18,5 @@ app.get('/demo.min.js', (req, res) => {
 app.listen(port, (err) => {
   if (err) {
     console.log('Error: ', err);
-  } else {
-    open(`http://localhost:${port}`);
   }
 });

@@ -82,7 +82,28 @@ export default class Diffy {
     const data2 = frame2.data;
 
     const buffer = new ArrayBuffer(length);
+    // console.log(this.sourceWidth, this.sourceHeight);
+    this.worker.postMessage({
+      buffer,
+      data1,
+      data2,
+      sensitivity: this.sensitivity,
+      width: this.sourceWidth,
+      height: this.sourceHeight
+    });
 
+  }
+
+  drawBlendImage({ data }) {
+
+    this.blendImageData
+      .data
+      .set(
+        new Uint8ClampedArray(data)
+      );
+    // console.log(this.blendImageData);
+    this.blendCanvasCtx.putImageData(this.blendImageData, 0, 0);
+    this.previousImageData = this.currentImageData;
   }
 
   /*
@@ -95,20 +116,26 @@ export default class Diffy {
     const height = canvas.height;
     this.currentImageData = ctx.getImageData(0, 0, width, height);
     this.previousImageData = this.previousImageData || ctx.getImageData(0, 0, width, height);
-    this.compare(currentImageData, previousImageData);
+    this.compare(this.currentImageData, this.previousImageData);
   }
 
   loop() {
     this.toCanvas(this.videoEl, this.rawCanvasEl);
+    this.blend(this.rawCanvasEl);
     this.tickFn(this.loop.bind(this));
   }
 
   init() {
     console.log('DOM ready. Init...');
-    this.worker.addEventListener('message', (message) => {
-      console.log(message);
-    });
+
+    // this.worker.addEventListener('message', this.drawBlendImage);
+    this.worker.addEventListener('message', this.drawBlendImage.bind(this));
+
+
     this.createElements(this.containerClassName);
+    this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
+    this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
+
     this.captureFn(this.captureConfig).then((blob) => {
       [this.rawCanvasEl, this.blendCanvasEl].forEach(this.mirror);
       this.toVideo(blob, this.videoEl);

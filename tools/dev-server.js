@@ -3,7 +3,6 @@
 import express from 'express';
 import path from 'path';
 import webpack from 'webpack';
-import open from 'open';
 import config from '../webpack.config';
 
 const app = express();
@@ -24,7 +23,5 @@ app.get('*', (req, res) => {
 app.listen(port, (err) => {
   if (err) {
     console.log('Error: ', err);
-  } else {
-    open(`http://localhost:${port}`);
   }
 })
