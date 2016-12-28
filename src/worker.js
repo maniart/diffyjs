@@ -24,7 +24,7 @@ const createDiffBuffer = (messageEvent) => {
   width = messageData.width;
   height = messageData.height;
   sensitivity = messageData.sensitivity;
-  threshold = messageEvent.threshold;
+
   data = new Uint32Array(buffer);
 
   for (let y = 0; y < height; ++y) {

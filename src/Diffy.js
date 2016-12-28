@@ -29,7 +29,6 @@ export default class Diffy {
     onTick = (values) => {},
     onMotion = (values) => {},
     sensitivity = 0.5,
-    threshold = 20,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
@@ -57,17 +56,7 @@ export default class Diffy {
 
     this.initialized = false;
 
-
-    // console.log('tickFn: ', this.tickFn);
-    // console.log('captureFn: ', this.captureFn);
-    // console.log('debug: ', this.debug);
-    // console.log('className: ', this.containerClassName);
-    // console.log('resolution: ', this.resolutionX, this.resolutionY);
-
-
-
     window.addEventListener('load', this.init.bind(this));
-
   }
 
   toVideo(blob, videoEl) {

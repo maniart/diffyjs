@@ -4,7 +4,7 @@ import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
 
-export const create = ({ resolution, sensitivity, threshold }) => {
+export const create = ({ resolution, sensitivity, threshold, debug }) => {
 
   if(!window) {
     throw new Error('Diffy.js is meant to be used in the browser. :^) ');
@@ -17,7 +17,6 @@ export const create = ({ resolution, sensitivity, threshold }) => {
   return Diffy.create({
     tickFn: requestAnimFrame,
     captureFn: capture,
-    debug: true,
     resolution,
     sensitivity,
     threshold
