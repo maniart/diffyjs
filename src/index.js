@@ -10,8 +10,8 @@ export const create = ({ resolution, sensitivity, threshold, debug }) => {
     throw new Error('Diffy.js is meant to be used in the browser. :^) ');
   }
 
-  if(!'Worker' in window) {
-    throw new Error('Diffy.js requires Web Workers. It looks like this environment does not support it. :(');
+  if('Worker' in window) {
+    throw new Error('Diffy.js requires Web Workers. It looks like this environment does not support this feature. :(');
   }
 
   return Diffy.create({

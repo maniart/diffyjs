@@ -1,2 +1,1 @@
-# Diffy.js
-A client-side JS motion detection libary.
+#Diffy.js ###A standalone motion decetor for the browser
