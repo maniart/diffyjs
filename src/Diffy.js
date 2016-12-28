@@ -204,12 +204,12 @@ export default class Diffy {
 
 
   static create(options) {
-    if(Diffy.instanceExists) {
+    if (Diffy.instanceExists) {
       throw new Error(`It seems a diffy instance
       already exists on this page.`);
     }
 
-    return new this(options);
     Diffy.instanceExists = true;
+    return new this(options);
   }
 }
