@@ -1,19 +1,11 @@
-/*
-  TODO worker error handling
-*/
-
 import Worker from 'worker-loader?inline!./worker';
-import { createOnceLog, $ } from './utils';
+import { createOnceLog, $, round } from './utils';
 
 // tmp
 const logger_1 = createOnceLog();
 const logger_2 = createOnceLog();
 
 export default class Diffy {
-
-  static instanceExists = false;
-  static VERSION = '1.0.0';
-
   constructor({
     tickFn = () => {},
     captureFn = () => {},
@@ -26,15 +18,17 @@ export default class Diffy {
     },
     debug = false,
     sourceDimensions = { w: 130, h: 100 },
-    onTick = (values) => {},
-    onMotion = (values) => {},
+    onFrame = (matrix) => {},
     sensitivity = 0.5,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
 
+
     this.tickFn = tickFn.bind(window);
     this.captureFn = captureFn;
+
+    this.onFrame = onFrame;
 
     this.currentImageData = null;
     this.previousImageData = null;
@@ -46,6 +40,7 @@ export default class Diffy {
 
     this.debug = debug;
     this.containerClassName = containerClassName;
+    this.debugViewCollapsed = false;
 
     this.captureConfig = captureConfig;
 
@@ -58,6 +53,9 @@ export default class Diffy {
 
     window.addEventListener('load', this.init.bind(this));
   }
+
+  static instanceExists = false;
+  static VERSION = '1.0.0';
 
   toVideo(blob, videoEl) {
     // piping blob to video element
@@ -80,13 +78,11 @@ export default class Diffy {
   }
 
   compare(frame1, frame2) {
-    // const length = frame1.length;
-
     const data1 = frame1.data;
     const data2 = frame2.data;
     const length = data1.length;
-
     const buffer = new ArrayBuffer(length);
+
     this.worker.postMessage({
       buffer,
       data1,
@@ -95,7 +91,6 @@ export default class Diffy {
       width: this.sourceWidth,
       height: this.sourceHeight
     });
-
   }
 
   drawBlendImageFromBuffer(buffer) {
@@ -122,13 +117,63 @@ export default class Diffy {
     this.compare(this.currentImageData, this.previousImageData);
   }
 
+  createMatrix() {
+    let i;
+    let j;
+    let posX;
+    let posY;
+    let k = 0;
+
+    const matrix = [];
+    const sourceWidth = this.sourceWidth;
+    const sourceHeight = this.sourceHeight;
+    const cellWidth = this.sourceWidth / this.resolutionX;
+    const cellHeight = this.sourceHeight / this.resolutionY;
+
+
+    let cellImageData = null;
+    let cellImageDataLength;
+    let cellPixelCount;
+    let average = 0;
+
+    for(i = 0; i < sourceWidth; i += cellWidth) {
+      let row = [];
+
+      for(j = 0; j < sourceHeight; j += cellHeight) {
+        cellImageData = this.blendCanvasCtx.getImageData(i, j, cellWidth, cellHeight).data;
+
+        /* TODO refactor with bitshifting */
+        cellImageDataLength = cellImageData.length;
+        cellPixelCount = cellImageDataLength / 4;
+        while(k < cellPixelCount) {
+          average += (cellImageData[k * 4] + cellImageData[k * 4 + 1] + cellImageData[k * 4 + 2]) / 3;
+          ++ k;
+        }
+        average = round(average / cellPixelCount);
+        /* push the value in the row */
+        row.push(average);
+        average = 0;
+        k = 0;
+      }
+      matrix.push(row); // store the row in matrix
+    }
+
+    return matrix;
+  }
+
   loop() {
     this.toCanvas(this.videoEl, this.rawCanvasEl);
     this.blend(this.rawCanvasEl);
+    this.onFrame(this.createMatrix());
     this.tickFn(this.loop.bind(this));
   }
 
   init() {
+
+    this.worker.addEventListener('error', (e) => {
+      throw e;
+    });
+
     this.worker.addEventListener('message', ({ data }) => {
       this.drawBlendImageFromBuffer(data);
     });
@@ -165,7 +210,6 @@ export default class Diffy {
     this.blendCanvasEl.width = this.sourceWidth;
     this.blendCanvasEl.height = this.sourceHeight;
 
-
     this.headerEl = document.createElement('header');
     this.headerEl.className = 'header';
 
@@ -176,6 +220,20 @@ export default class Diffy {
     this.toggleEl = document.createElement('span');
     this.toggleEl.className = 'toggle';
     this.toggleEl.innerText = '-';
+
+    this.headerEl.addEventListener('click', (ev) => {
+      ev.preventDefault();
+      [this.videoEl, this.rawCanvasEl, this.blendCanvasEl].forEach((el) => {
+        if (this.debugViewCollapsed) {
+          el.classList.remove('hidden');
+          this.toggleEl.innerText = '-';
+        } else {
+          el.classList.add('hidden');
+          this.toggleEl.innerText = '+';
+        }
+      });
+      this.debugViewCollapsed = !this.debugViewCollapsed;
+    });
 
     this.headerEl.appendChild(this.toggleEl);
     this.headerEl.appendChild(this.titleEl);
@@ -205,6 +263,7 @@ export default class Diffy {
         width: 100%;
         background-color: #000;
         font-size: 16px;
+        cursor: pointer;
       }
       .${containerClassName} .title {
         display: inline;
@@ -214,12 +273,16 @@ export default class Diffy {
       }
       .${containerClassName} .toggle {
         padding: 5px;
-        cursor: pointer;
       }
 
       .${containerClassName} .view {
         padding: 5px;
       }
+
+      .${containerClassName} .view.hidden {
+        display: none;
+      }
+
     `;
     node.innerHTML = styles;
     document.body.appendChild(node);
@@ -228,13 +291,14 @@ export default class Diffy {
   initDom(containerClassName) {
     this.createElements(containerClassName);
     this.injectCssStyles();
-
   }
 
   static create(options) {
     if (Diffy.instanceExists) {
-      throw new Error(`It seems a diffy instance
-      already exists on this page.`);
+      throw new Error(`
+        Yikes! It seems like a Diffy.js instance already exists on this page. :|
+        For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
+      `);
     }
 
     Diffy.instanceExists = true;
