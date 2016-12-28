@@ -133,7 +133,7 @@ export default class Diffy {
       this.drawBlendImageFromBuffer(data);
     });
 
-    this.createElements(this.containerClassName);
+    this.initDom(this.containerClassName);
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
     this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
 
@@ -150,30 +150,31 @@ export default class Diffy {
     this.containerEl.className = containerClassName;
 
     this.videoEl = document.createElement('video');
-    this.videoEl.className = 'debug--video';
+    this.videoEl.className = 'video view';
     this.videoEl.setAttribute('autoplay', '');
     this.videoEl.width = this.sourceWidth;
     this.videoEl.height = this.sourceHeight;
 
     this.rawCanvasEl = document.createElement('canvas');
-    this.rawCanvasEl.className = 'debug--raw-canvas';
+    this.rawCanvasEl.className = 'canvas--raw view';
     this.rawCanvasEl.width = this.sourceWidth;
     this.rawCanvasEl.height = this.sourceHeight;
 
     this.blendCanvasEl = document.createElement('canvas');
-    this.blendCanvasEl.className = 'debug--blend-canvas';
+    this.blendCanvasEl.className = 'canvas--blend view';
     this.blendCanvasEl.width = this.sourceWidth;
     this.blendCanvasEl.height = this.sourceHeight;
 
 
-    this.headerEl = document.createElement('div');
-    this.headerEl.className = 'debug--header';
+    this.headerEl = document.createElement('header');
+    this.headerEl.className = 'header';
 
-    this.titleEl = document.createElement('h6');
-    this.titleEl.className = 'debug--title';
+    this.titleEl = document.createElement('h1');
+    this.titleEl.className = 'title';
     this.titleEl.innerText = 'Diffy debug view';
 
     this.toggleEl = document.createElement('span');
+    this.toggleEl.className = 'toggle';
     this.toggleEl.innerText = '-';
 
     this.headerEl.appendChild(this.toggleEl);
@@ -185,6 +186,49 @@ export default class Diffy {
     this.containerEl.appendChild(this.blendCanvasEl);
 
     document.body.appendChild(this.containerEl);
+  }
+
+  injectCssStyles() {
+    const node = document.createElement('style');
+    const containerClassName = this.containerClassName;
+    const styles = `
+      .${containerClassName} {
+        position: fixed;
+        top: 0;
+        left: 0;
+        font-family: monospace;
+        background-color: #000;
+        border: 4px solid #000;
+        color: #fff;
+      }
+      .${containerClassName} .header {
+        width: 100%;
+        background-color: #000;
+        font-size: 16px;
+      }
+      .${containerClassName} .title {
+        display: inline;
+        margin-left: 10px;
+        font-weight: 100;
+        font-size: 16px;
+      }
+      .${containerClassName} .toggle {
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      .${containerClassName} .view {
+        padding: 5px;
+      }
+    `;
+    node.innerHTML = styles;
+    document.body.appendChild(node);
+  }
+
+  initDom(containerClassName) {
+    this.createElements(containerClassName);
+    this.injectCssStyles();
+
   }
 
   static create(options) {
