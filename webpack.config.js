@@ -121,6 +121,5 @@ export default {
     loaders: [
       es6LoaderConfig
     ]
-  },
-
+  }
 };
