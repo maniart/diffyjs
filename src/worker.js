@@ -10,7 +10,6 @@ let width;
 let height;
 let delta;
 let sensitivity;
-let threshold;
 
 const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity } }) => {
   let i = 0;
