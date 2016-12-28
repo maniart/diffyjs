@@ -1,14 +1,25 @@
-import ReadableStream from 'readable-stream';
+/* eslint-disable no-console */
 
-export default class Diffy {
-  constructor(props) {
-    console.log('Aw yis');
-    this.stream = new ReadableStream();
+import Diffy from './Diffy';
+import requestAnimFrame from './raf';
+import capture from './capture';
+
+export const create = ({ resolution, sensitivity, threshold, debug }) => {
+
+  if(!window) {
+    throw new Error('Diffy.js is meant to be used in the browser. :^) ');
   }
 
-  createStream() {
-    console.log('create stream here');
+  if('Worker' in window) {
+    throw new Error('Diffy.js requires Web Workers. It looks like this environment does not support this feature. :(');
   }
+
+  return Diffy.create({
+    tickFn: requestAnimFrame,
+    captureFn: capture,
+    resolution,
+    sensitivity,
+    threshold
+  });
+
 }
-
-

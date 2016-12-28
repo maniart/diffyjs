@@ -1,21 +1,28 @@
 {
   "name": "diffyjs",
   "version": "1.0.0",
-  "description": "",
-  "main": "api.js",
+  "description": "A client-side JS motion detection library",
+  "main": "dist/lib.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack-dev-server --inline --hot --colors --port 3030 --content-base ./",
-    "build-example": "./node_modules/.bin/babel examples/src/main.js --out-file examples/build/main.js",
-    "serve-example": "cd examples && python -mSimpleHTTPServer 2323",
-    "example": "npm run build-example && npm run serve-example"
+    "clean": "rm -rf dist/ demo/dist",
+    "start": "npm-run-all --parallel serve:dev lint:watch",
+    "demo": "run-s build serve:demo",
+    "serve:dev": "export WEBPACK_ENV=dev; node_modules/.bin/babel-node tools/dev-server.js",
+    "serve:demo": "node_modules/.bin/babel-node tools/demo-server.js",
+    "build": "run-s clean build:dist build:demo",
+    "build:dist": "export WEBPACK_ENV=dist; node -r babel-register node_modules/.bin/webpack",
+    "build:demo": "export WEBPACK_ENV=demo; node -r babel-register node_modules/.bin/webpack",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint:watch": "npm run lint -- --watch",
+    "test": "mocha --reporter progress tools/test-setup.js \"src/**/*.test.js\"",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maniart/diffyjs.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Mani Nilchiani",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/maniart/diffyjs/issues"
   },
@@ -24,18 +31,21 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.0",
     "babel-loader": "^6.2.5",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "^6.18.0",
+    "babel-register": "^6.18.0",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-loader": "^1.6.0",
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.4.1",
+    "eslint-watch": "^2.1.14",
+    "express": "^4.14.0",
+    "npm-run-all": "^3.1.2",
     "webpack": "^1.13.2",
-    "webpack-dev-server": "^1.16.2",
-    "webpack-livereload-plugin": "^0.9.0"
-  },
-  "dependencies": {
-    "readable-stream": "^2.2.2"
+    "webpack-dev-middleware": "1.6.1",
+    "webpack-hot-middleware": "2.10.0",
+    "worker-loader": "^0.7.1"
   }
 }
