@@ -4,7 +4,7 @@ import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
 
-const create = ({ resolution, sensitivity, threshold, debug }) => {
+const create = ({ resolution, sensitivity, threshold, debug, onFrame }) => {
 
   if(!window) {
     throw new Error(`
@@ -27,7 +27,8 @@ const create = ({ resolution, sensitivity, threshold, debug }) => {
     resolution,
     sensitivity,
     threshold,
-    debug
+    debug,
+    onFrame
   });
 
 }
