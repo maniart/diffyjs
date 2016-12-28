@@ -63,6 +63,7 @@ module.exports = {
   "env": {
     "es6": true,
     "browser": true,
+    "worker": true,
     "node": true,
     "mocha": true
   },
