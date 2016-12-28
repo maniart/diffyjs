@@ -2,9 +2,8 @@ import { abs, polarize, createOnceLog } from './utils';
 
 const logger_1 = createOnceLog();
 
-let messageData;
 let buffer;
-let data;
+let pixelData;
 let data1;
 let data2;
 let average1;
@@ -15,18 +14,9 @@ let delta;
 let sensitivity;
 let threshold;
 
-const createDiffBuffer = (messageEvent) => {
-  let i;
-  messageData = messageEvent.data;
-  buffer = messageData.buffer;
-  data1 = messageData.data1;
-  data2 = messageData.data2;
-  width = messageData.width;
-  height = messageData.height;
-  sensitivity = messageData.sensitivity;
-
-  data = new Uint32Array(buffer);
-
+const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity } }) => {
+  let i = 0;
+  pixelData = new Uint32Array(buffer);
   for (let y = 0; y < height; ++y) {
     for (let x = 0; x < width; ++x) {
       i = y * width + x
@@ -36,7 +26,7 @@ const createDiffBuffer = (messageEvent) => {
         abs(average1 - average2), 0x15
       );
 
-      data[i] =
+      pixelData[i] =
         (255   << 24) |     // alpha
         (delta << 16) |     // blue
         (delta <<  8) |     // green

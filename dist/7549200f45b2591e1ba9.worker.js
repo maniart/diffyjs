@@ -50,9 +50,8 @@
 	
 	var logger_1 = (0, _utils.createOnceLog)();
 	
-	var messageData = void 0;
 	var buffer = void 0;
-	var data = void 0;
+	var pixelData = void 0;
 	var data1 = void 0;
 	var data2 = void 0;
 	var average1 = void 0;
@@ -63,18 +62,17 @@
 	var sensitivity = void 0;
 	var threshold = void 0;
 	
-	var createDiffBuffer = function createDiffBuffer(messageEvent) {
-	  var i = void 0;
-	  messageData = messageEvent.data;
-	  buffer = messageData.buffer;
-	  data1 = messageData.data1;
-	  data2 = messageData.data2;
-	  width = messageData.width;
-	  height = messageData.height;
-	  sensitivity = messageData.sensitivity;
+	var createDiffBuffer = function createDiffBuffer(_ref) {
+	  var _ref$data = _ref.data,
+	      buffer = _ref$data.buffer,
+	      data1 = _ref$data.data1,
+	      data2 = _ref$data.data2,
+	      width = _ref$data.width,
+	      height = _ref$data.height,
+	      sensitivity = _ref$data.sensitivity;
 	
-	  data = new Uint32Array(buffer);
-	
+	  var i = 0;
+	  pixelData = new Uint32Array(buffer);
 	  for (var y = 0; y < height; ++y) {
 	    for (var x = 0; x < width; ++x) {
 	      i = y * width + x;
@@ -82,7 +80,7 @@
 	      average2 = (data2[i * 4] + data2[i * 4 + 1] + data2[i * 4 + 2]) / 3 / sensitivity;
 	      delta = (0, _utils.polarize)((0, _utils.abs)(average1 - average2), 0x15);
 	
-	      data[i] = 255 << 24 | // alpha
+	      pixelData[i] = 255 << 24 | // alpha
 	      delta << 16 | // blue
 	      delta << 8 | // green
 	      delta; // red
@@ -151,4 +149,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=c1ff0f32becbf98414d1.worker.js.map
+//# sourceMappingURL=7549200f45b2591e1ba9.worker.js.map
