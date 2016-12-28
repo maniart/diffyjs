@@ -10,10 +10,6 @@ const logger_1 = createOnceLog();
 const logger_2 = createOnceLog();
 
 export default class Diffy {
-
-  static instanceExists = false;
-  static VERSION = '1.0.0';
-
   constructor({
     tickFn = () => {},
     captureFn = () => {},
@@ -32,6 +28,7 @@ export default class Diffy {
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
+
 
     this.tickFn = tickFn.bind(window);
     this.captureFn = captureFn;
@@ -59,6 +56,9 @@ export default class Diffy {
 
     window.addEventListener('load', this.init.bind(this));
   }
+
+  static instanceExists = false;
+  static VERSION = '1.0.0';
 
   toVideo(blob, videoEl) {
     // piping blob to video element
@@ -252,8 +252,10 @@ export default class Diffy {
 
   static create(options) {
     if (Diffy.instanceExists) {
-      throw new Error(`It seems a diffy instance
-      already exists on this page.`);
+      throw new Error(`
+        Yikes! It seems like a Diffy.js instance already exists on this page. :|
+        For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
+      `);
     }
 
     Diffy.instanceExists = true;

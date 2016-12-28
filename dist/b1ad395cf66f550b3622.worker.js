@@ -48,8 +48,6 @@
 	
 	var _utils = __webpack_require__(1);
 	
-	var logger_1 = (0, _utils.createOnceLog)();
-	
 	var buffer = void 0;
 	var pixelData = void 0;
 	var data1 = void 0;
@@ -72,6 +70,7 @@
 	      sensitivity = _ref$data.sensitivity;
 	
 	  var i = 0;
+	
 	  pixelData = new Uint32Array(buffer);
 	  for (var y = 0; y < height; ++y) {
 	    for (var x = 0; x < width; ++x) {
@@ -79,7 +78,6 @@
 	      average1 = (data1[i * 4] + data1[i * 4 + 1] + data1[i * 4 + 2]) / 3 / sensitivity;
 	      average2 = (data2[i * 4] + data2[i * 4 + 1] + data2[i * 4 + 2]) / 3 / sensitivity;
 	      delta = (0, _utils.polarize)((0, _utils.abs)(average1 - average2), 0x15);
-	
 	      pixelData[i] = 255 << 24 | // alpha
 	      delta << 16 | // blue
 	      delta << 8 | // green
@@ -149,4 +147,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=7549200f45b2591e1ba9.worker.js.map
+//# sourceMappingURL=b1ad395cf66f550b3622.worker.js.map
