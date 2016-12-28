@@ -1,4 +1,8 @@
 import Worker from 'worker-loader?inline!./worker';
+import { createOnceLog } from './utils';
+
+// tmp
+const logger_1 = createOnceLog();
 
 export default class Diffy {
   constructor({
@@ -95,7 +99,7 @@ export default class Diffy {
   }
 
   drawBlendImage({ data }) {
-
+    // logger_1(data);
     this.blendImageData
       .data
       .set(
@@ -128,9 +132,7 @@ export default class Diffy {
   init() {
     console.log('DOM ready. Init...');
 
-    // this.worker.addEventListener('message', this.drawBlendImage);
     this.worker.addEventListener('message', this.drawBlendImage.bind(this));
-
 
     this.createElements(this.containerClassName);
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
@@ -141,7 +143,6 @@ export default class Diffy {
       this.toVideo(blob, this.videoEl);
       this.loop();
     });
-    this.worker.postMessage({bar: 'foo'});
     this.initialized = true;
   }
 

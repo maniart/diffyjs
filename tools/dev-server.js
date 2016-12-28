@@ -24,4 +24,5 @@ app.listen(port, (err) => {
   if (err) {
     console.log('Error: ', err);
   }
+  console.log(`Dev server is running on ${port}`);
 })

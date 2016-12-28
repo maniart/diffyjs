@@ -1,4 +1,6 @@
-import { abs, polarize } from './utils';
+import { abs, polarize, createOnceLog } from './utils';
+
+const logger_1 = createOnceLog();
 
 var messageData;
 var buffer;
@@ -14,6 +16,7 @@ var sensitivity;
 
 const createDiffBuffer = (messageEvent) => {
   var i;
+  logger_1(messageEvent);
   messageData = messageEvent.data;
   buffer = messageData.buffer;
   data1 = messageData.data1;
@@ -39,7 +42,8 @@ const createDiffBuffer = (messageEvent) => {
     }
   }
 
-  postMessage(buffer);
+  logger_1(buffer);
+
 };
 
 onmessage = createDiffBuffer;
