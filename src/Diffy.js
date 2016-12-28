@@ -1,3 +1,7 @@
+/*
+  TODO worker error handling
+*/
+
 import Worker from 'worker-loader?inline!./worker';
 import { createOnceLog, $ } from './utils';
 
@@ -6,6 +10,10 @@ const logger_1 = createOnceLog();
 const logger_2 = createOnceLog();
 
 export default class Diffy {
+
+  static instanceExists = false;
+  static VERSION = '1.0.0';
+
   constructor({
     tickFn = () => {},
     captureFn = () => {},
@@ -21,6 +29,7 @@ export default class Diffy {
     onTick = (values) => {},
     onMotion = (values) => {},
     sensitivity = 0.5,
+    threshold = 20,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
@@ -188,20 +197,6 @@ export default class Diffy {
 
     document.body.appendChild(this.containerEl);
   }
-
-
-  static get VERSION() {
-    return '1.0.0';
-  }
-
-  static get instanceExists() {
-    return false;
-  }
-
-  static set instanceExists(bool) {
-    Diffy.instanceExists = bool;
-  }
-
 
   static create(options) {
     if (Diffy.instanceExists) {
