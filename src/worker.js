@@ -2,21 +2,20 @@ import { abs, polarize, createOnceLog } from './utils';
 
 const logger_1 = createOnceLog();
 
-var messageData;
-var buffer;
-var data;
-var data1;
-var data2;
-var average1;
-var average2;
-var width;
-var height;
-var delta;
-var sensitivity;
+let messageData;
+let buffer;
+let data;
+let data1;
+let data2;
+let average1;
+let average2;
+let width;
+let height;
+let delta;
+let sensitivity;
 
 const createDiffBuffer = (messageEvent) => {
-  var i;
-  logger_1(messageEvent);
+  let i;
   messageData = messageEvent.data;
   buffer = messageData.buffer;
   data1 = messageData.data1;
@@ -25,25 +24,25 @@ const createDiffBuffer = (messageEvent) => {
   height = messageData.height;
   sensitivity = messageData.sensitivity;
   data = new Uint32Array(buffer);
-  for (var y = 0; y < height; ++y) {
-    for (var x = 0; x < width; ++x) {
+
+  for (let y = 0; y < height; ++y) {
+    for (let x = 0; x < width; ++x) {
       i = y * width + x
-      average1 = ((data1[i*4] + data1[i*4+1] + data1[i*4+2]) / 3) / 1;
-      average2 = ((data2[i*4] + data2[i*4+1] + data2[i*4+2]) / 3) / 1;
+      average1 = ((data1[i*4] + data1[i*4+1] + data1[i*4+2]) / 3) / sensitivity;
+      average2 = ((data2[i*4] + data2[i*4+1] + data2[i*4+2]) / 3) / sensitivity;
       delta = polarize(
         abs(average1 - average2), 0x15
       );
 
       data[i] =
-        (255   << 24) |    // alpha
-        (delta << 16) |    // blue
-        (delta <<  8) |    // green
-         delta;           // red
+        (255   << 24) |     // alpha
+        (delta << 16) |     // blue
+        (delta <<  8) |     // green
+         delta;             // red
     }
   }
 
-  logger_1(buffer);
-
+  postMessage(buffer);
 };
 
 onmessage = createDiffBuffer;

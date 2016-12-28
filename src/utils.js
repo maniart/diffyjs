@@ -15,23 +15,22 @@ export const createOnceLog = () => {
 }
 
 /*
-  utility function for getting DOM references
-  return DOM Object
+  utility function to access DOM references
 */
 export const $ = (selector) => document.querySelector(selector);
 
 /*
   bitwise Math.round
-  returns number
 */
 export const round = (number) => (number + .5) >> 0;
 
-
+/*
+  butwise Math.abs
+*/
 export const abs = (value) => (value ^ (value >> 31)) - (value >> 31);
 
 
 /*
   polarize pixel values based on value and threshold
-  returns 0 or 0XFF
 */
-export const polarize = (value, threshold) => (value > threshold) ? 0xFF0033 : 0XFF;
+export const polarize = (value, threshold) => (value > threshold) ? 0x00 : 0XFF;

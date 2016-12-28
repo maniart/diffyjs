@@ -6,6 +6,4 @@ const diffy = createDiffy({
   resolution: { x: 20, y: 15 }
 });
 
-
-
-
+window.diffy = diffy;

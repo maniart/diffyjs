@@ -71,11 +71,11 @@ const devPlugins = [
   new webpack.NoErrorsPlugin()
 ];
 const distPlugins = [
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    }
-  })
+  // new webpack.optimize.UglifyJsPlugin({
+  //   compress: {
+  //     warnings: false
+  //   }
+  // })
 ];
 
 /*

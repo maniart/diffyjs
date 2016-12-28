@@ -1,8 +1,9 @@
 import Worker from 'worker-loader?inline!./worker';
-import { createOnceLog } from './utils';
+import { createOnceLog, $ } from './utils';
 
 // tmp
 const logger_1 = createOnceLog();
+const logger_2 = createOnceLog();
 
 export default class Diffy {
   constructor({
@@ -81,12 +82,13 @@ export default class Diffy {
   }
 
   compare(frame1, frame2) {
-    const length = frame1.length;
+    // const length = frame1.length;
+
     const data1 = frame1.data;
     const data2 = frame2.data;
+    const length = data1.length;
 
     const buffer = new ArrayBuffer(length);
-    // console.log(this.sourceWidth, this.sourceHeight);
     this.worker.postMessage({
       buffer,
       data1,
@@ -98,14 +100,13 @@ export default class Diffy {
 
   }
 
-  drawBlendImage({ data }) {
-    // logger_1(data);
+  drawBlendImageFromBuffer(buffer) {
     this.blendImageData
       .data
       .set(
-        new Uint8ClampedArray(data)
+        new Uint8ClampedArray(buffer)
       );
-    // console.log(this.blendImageData);
+
     this.blendCanvasCtx.putImageData(this.blendImageData, 0, 0);
     this.previousImageData = this.currentImageData;
   }
@@ -130,9 +131,9 @@ export default class Diffy {
   }
 
   init() {
-    console.log('DOM ready. Init...');
-
-    this.worker.addEventListener('message', this.drawBlendImage.bind(this));
+    this.worker.addEventListener('message', ({ data }) => {
+      this.drawBlendImageFromBuffer(data);
+    });
 
     this.createElements(this.containerClassName);
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
