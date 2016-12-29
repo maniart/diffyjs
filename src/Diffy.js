@@ -55,7 +55,7 @@ export default class Diffy {
   }
 
   static instanceExists = false;
-  static VERSION = '1.0.0';
+  static VERSION = '1.0.1';
 
   toVideo(blob, videoEl) {
     // piping blob to video element

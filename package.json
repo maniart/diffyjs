@@ -1,6 +1,6 @@
 {
   "name": "diffyjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A client-side JS motion detection library",
   "main": "dist/diffy.min.js",
   "scripts": {

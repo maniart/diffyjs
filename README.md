@@ -1,3 +1,3 @@
-#Diffy.js 
-###A standalone motion decetor for the browser
+#Diffy.js
+###A standalone motion detection library for the browser
 todo
