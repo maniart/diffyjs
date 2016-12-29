@@ -13,7 +13,12 @@
     "camera"
   ],
   "homepage": "https://github.com/maniart/diffyjs",
-  "moduleType": [],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+    "es6"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
