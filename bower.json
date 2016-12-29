@@ -1,0 +1,24 @@
+{
+  "name": "diffyjs",
+  "description": "A client-side JS motion detection library",
+  "main": "dist/diffy.min.js",
+  "authors": [
+    "Mani Nilchiani"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "motion",
+    "cv",
+    "interactivity",
+    "camera"
+  ],
+  "homepage": "https://github.com/maniart/diffyjs",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
