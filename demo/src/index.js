@@ -17,10 +17,10 @@ let radius = 0;
 function drawGrid(matrix) {
   matrix.forEach((row, rowIdx) => {
     row.forEach((column, colIdx) => {
-      radius = 100;
+      radius = 10;
       gridCtx.beginPath();
       gridCtx.fillStyle = `rgb(${column}, ${column}, ${column})`;
-      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, (radius / column), 0, (2 * PI), false);
+      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, radius, 0, (2 * PI), false);
       gridCtx.fill();
       gridCtx.closePath();
     });
