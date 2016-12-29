@@ -2,7 +2,7 @@
   "name": "diffyjs",
   "version": "1.0.0",
   "description": "A client-side JS motion detection library",
-  "main": "dist/lib.js",
+  "main": "dist/diffy.min.js",
   "scripts": {
     "clean": "rm -rf dist/ demo/dist",
     "start": "npm-run-all --parallel serve:dev lint:watch",

@@ -32,7 +32,7 @@ let output = {
 };
 const devAndDistOutput = {
   path: path.resolve(__dirname, 'dist'),
-  library: 'diffy',
+  library: 'Diffy',
   libraryTarget: 'umd'
 };
 const devOutput = {

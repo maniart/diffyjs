@@ -58,6 +58,7 @@
 	var height = void 0;
 	var delta = void 0;
 	var sensitivity = void 0;
+	var actualSensitivity = void 0;
 	
 	var createDiffBuffer = function createDiffBuffer(_ref) {
 	  var _ref$data = _ref.data,
@@ -69,13 +70,14 @@
 	      sensitivity = _ref$data.sensitivity;
 	
 	  var i = 0;
+	  actualSensitivity = 1 - sensitivity;
 	
 	  pixelData = new Uint32Array(buffer);
 	  for (var y = 0; y < height; ++y) {
 	    for (var x = 0; x < width; ++x) {
 	      i = y * width + x;
-	      average1 = (data1[i * 4] + data1[i * 4 + 1] + data1[i * 4 + 2]) / 3 / sensitivity;
-	      average2 = (data2[i * 4] + data2[i * 4 + 1] + data2[i * 4 + 2]) / 3 / sensitivity;
+	      average1 = (data1[i * 4] + data1[i * 4 + 1] + data1[i * 4 + 2]) / 3 / actualSensitivity;
+	      average2 = (data2[i * 4] + data2[i * 4 + 1] + data2[i * 4 + 2]) / 3 / actualSensitivity;
 	      delta = (0, _utils.polarize)((0, _utils.abs)(average1 - average2), 0x15);
 	      pixelData[i] = 255 << 24 | // alpha
 	      delta << 16 | // blue
@@ -146,4 +148,4 @@
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=20b93f76eba0ef812682.worker.js.map
+//# sourceMappingURL=a6882b19b6c320d25dad.worker.js.map
