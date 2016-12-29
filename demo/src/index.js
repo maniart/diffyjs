@@ -30,7 +30,7 @@ function drawGrid(matrix) {
 const diffy = create({
   resolution: { x: resolutionX, y: resolutionY },
   sensitivity: 0.1,
-  debug: false,
+  debug: true,
   onFrame: drawGrid
 });
 
