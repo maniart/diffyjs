@@ -4,7 +4,7 @@ import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
 
-const create = ({ resolution, sensitivity, debug, onFrame }) => {
+export const create = ({ resolution, sensitivity, debug, onFrame }) => {
 
   if(!window) {
     throw new Error(`
@@ -31,5 +31,3 @@ const create = ({ resolution, sensitivity, debug, onFrame }) => {
   });
 
 }
-
-export default create;

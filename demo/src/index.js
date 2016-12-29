@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import create from '../../dist/diffy.min.js';
+import { create } from '../../dist/diffy.min.js';
 
 const gridCanvas = document.querySelector('#grid-canvas');
 const gridCtx = gridCanvas.getContext('2d');
@@ -15,12 +15,12 @@ const PI = Math.PI;
 let radius = 0;
 
 function drawGrid(matrix) {
-  matrix.forEach(function(row, rowIdx) {
-    row.forEach(function(column, colIdx) {
-      radius = 10;
+  matrix.forEach((row, rowIdx) => {
+    row.forEach((column, colIdx) => {
+      radius = 100;
       gridCtx.beginPath();
-      gridCtx.fillStyle = 'rgb(' + column + ',' + column + ',' + column + ')';
-      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, radius, 0, 2 * PI, false);
+      gridCtx.fillStyle = `rgb(${column}, ${column}, ${column})`;
+      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, (radius / column), 0, (2 * PI), false);
       gridCtx.fill();
       gridCtx.closePath();
     });
