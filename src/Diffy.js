@@ -19,7 +19,7 @@ export default class Diffy {
     debug = false,
     sourceDimensions = { w: 130, h: 100 },
     onFrame = (matrix) => {},
-    sensitivity = 0.5,
+    sensitivity = 0.2,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {

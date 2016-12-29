@@ -12,12 +12,15 @@ const cellWidth = gridWidth / resolutionX;
 const cellHeight = gridHeight / resolutionY;
 const PI = Math.PI;
 
+let radius = 0;
+
 function drawGrid(matrix) {
   matrix.forEach(function(row, rowIdx) {
     row.forEach(function(column, colIdx) {
+      radius = 10;
       gridCtx.beginPath();
       gridCtx.fillStyle = 'rgb(' + column + ',' + column + ',' + column + ')';
-      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, 1, 0, 2 * PI, false);
+      gridCtx.arc(rowIdx * cellWidth, colIdx * cellHeight, radius, 0, 2 * PI, false);
       gridCtx.fill();
       gridCtx.closePath();
     });
@@ -26,7 +29,7 @@ function drawGrid(matrix) {
 
 const diffy = create({
   resolution: { x: resolutionX, y: resolutionY },
-  sensitivity: 0.5,
+  sensitivity: 0.1,
   debug: true,
   onFrame: drawGrid
 });
