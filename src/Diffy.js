@@ -244,6 +244,10 @@ export default class Diffy {
     this.containerEl.appendChild(this.blendCanvasEl);
 
     document.body.appendChild(this.containerEl);
+
+    if (!this.debug) {
+      this.containerEl.classList.add('hidden');
+    }
   }
 
   injectCssStyles() {
@@ -283,6 +287,9 @@ export default class Diffy {
         display: none;
       }
 
+      .${containerClassName}.hidden {
+        display: none;
+      }
     `;
     node.innerHTML = styles;
     document.body.appendChild(node);
