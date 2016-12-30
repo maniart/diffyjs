@@ -6,6 +6,8 @@ import capture from './capture';
 import DiffWorker from 'worker-loader?inline!./worker';
 import { $, round } from './utils';
 
+let instanceExists = false;
+
 export const create = ({ resolution, sensitivity, debug, onFrame }) => {
 
   if(!window) {
@@ -23,6 +25,15 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     `);
   }
 
+  if(instanceExists) {
+    throw new Error(`
+      Yikes! It seems like a Diffy.js instance already exists on this page. :|
+      For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
+    `);
+  }
+
+  instanceExists = true;
+
   return Diffy.create({
     tickFn: requestAnimFrame,
     captureFn: capture,
@@ -34,5 +45,4 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     debug,
     onFrame
   });
-
 }
