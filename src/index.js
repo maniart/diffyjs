@@ -4,7 +4,7 @@ import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
 import DiffWorker from 'worker-loader?inline!./worker';
-import { $, round } from './utils';
+import { round } from './utils';
 
 let instanceExists = false;
 
@@ -39,11 +39,11 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     captureFn: capture,
     DiffWorker,
     roundFn: round,
-    $,
     resolution,
     sensitivity,
     debug,
     onFrame,
-    win: window
+    win: window,
+    doc: document
   });
 }

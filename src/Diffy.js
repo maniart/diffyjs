@@ -4,8 +4,8 @@ export default class Diffy {
     captureFn = () => {},
     DiffWorker = () => {},
     roundFn = () => {},
-    $ = () => {},
     win = {},
+    doc = {},
     captureConfig = {
       audio: false,
       video: {
@@ -15,18 +15,18 @@ export default class Diffy {
     },
     debug = false,
     sourceDimensions = { w: 130, h: 100 },
-    onFrame = (matrix) => {},
+    onFrame = () => {},
     sensitivity = 0.2,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
 
     const _win = win;
+    this.doc = doc;
 
     this.tickFn = tickFn.bind(_win);
     this.captureFn = captureFn;
     this.roundFn = roundFn;
-    this.$ = $;
 
     this.onFrame = onFrame;
 
@@ -118,8 +118,6 @@ export default class Diffy {
   createMatrix() {
     let i;
     let j;
-    let posX;
-    let posY;
     let k = 0;
 
     const matrix = [];
@@ -135,7 +133,7 @@ export default class Diffy {
     let average = 0;
 
     for(i = 0; i < sourceWidth; i += cellWidth) {
-      let row = [];
+      const row = [];
 
       for(j = 0; j < sourceHeight; j += cellHeight) {
         cellImageData = this.blendCanvasCtx.getImageData(i, j, cellWidth, cellHeight).data;
@@ -186,33 +184,33 @@ export default class Diffy {
   }
 
   createElements(containerClassName) {
-    this.containerEl = document.createElement('div');
+    this.containerEl = this.doc.createElement('div');
     this.containerEl.className = containerClassName;
 
-    this.videoEl = document.createElement('video');
+    this.videoEl = this.doc.createElement('video');
     this.videoEl.className = 'video view';
     this.videoEl.setAttribute('autoplay', '');
     this.videoEl.width = this.sourceWidth;
     this.videoEl.height = this.sourceHeight;
 
-    this.rawCanvasEl = document.createElement('canvas');
+    this.rawCanvasEl = this.doc.createElement('canvas');
     this.rawCanvasEl.className = 'canvas--raw view';
     this.rawCanvasEl.width = this.sourceWidth;
     this.rawCanvasEl.height = this.sourceHeight;
 
-    this.blendCanvasEl = document.createElement('canvas');
+    this.blendCanvasEl = this.doc.createElement('canvas');
     this.blendCanvasEl.className = 'canvas--blend view';
     this.blendCanvasEl.width = this.sourceWidth;
     this.blendCanvasEl.height = this.sourceHeight;
 
-    this.headerEl = document.createElement('header');
+    this.headerEl = this.doc.createElement('header');
     this.headerEl.className = 'header';
 
-    this.titleEl = document.createElement('h1');
+    this.titleEl = this.doc.createElement('h1');
     this.titleEl.className = 'title';
     this.titleEl.innerText = 'Diffy debug view';
 
-    this.toggleEl = document.createElement('span');
+    this.toggleEl = this.doc.createElement('span');
     this.toggleEl.className = 'toggle';
     this.toggleEl.innerText = '-';
 
@@ -238,7 +236,7 @@ export default class Diffy {
     this.containerEl.appendChild(this.rawCanvasEl);
     this.containerEl.appendChild(this.blendCanvasEl);
 
-    document.body.appendChild(this.containerEl);
+    this.doc.body.appendChild(this.containerEl);
 
     if (!this.debug) {
       this.containerEl.classList.add('hidden');
@@ -246,9 +244,8 @@ export default class Diffy {
   }
 
   injectCssStyles() {
-    const node = document.createElement('style');
+    const node = this.doc.createElement('style');
     const containerClassName = this.containerClassName;
-    const $ = this.$;
     const styles = `
       .${containerClassName} {
         position: fixed;
@@ -276,7 +273,7 @@ export default class Diffy {
       .${containerClassName} .view.hidden, .${containerClassName}.hidden { display: none; }
     `;
     node.innerHTML = styles;
-    document.body.appendChild(node);
+    this.doc.body.appendChild(node);
   }
 
   initDom(containerClassName) {
