@@ -3,6 +3,8 @@
 import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
+import DiffWorker from 'worker-loader?inline!./worker';
+import { $, round } from './utils';
 
 export const create = ({ resolution, sensitivity, debug, onFrame }) => {
 
@@ -24,6 +26,9 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
   return Diffy.create({
     tickFn: requestAnimFrame,
     captureFn: capture,
+    DiffWorker,
+    roundFn: round,
+    $,
     resolution,
     sensitivity,
     debug,
