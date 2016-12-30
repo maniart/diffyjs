@@ -17,7 +17,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     `);
   }
 
-  if(!'Worker' in window) {
+  if(!('Worker' in window)) {
     throw new Error(`
       Diffy.js requires Web Workers.
       It looks like this environment does not support this feature. :(
