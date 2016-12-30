@@ -1,6 +1,6 @@
 {
   "name": "diffyjs",
-  "description": "A client-side JS motion detection library",
+  "description": "A dependency-free motion detection library for the browser",
   "main": "dist/diffy.min.js",
   "authors": [
     "Mani Nilchiani"

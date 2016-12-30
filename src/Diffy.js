@@ -1,14 +1,11 @@
-import Worker from 'worker-loader?inline!./worker';
-import { createOnceLog, $, round } from './utils';
-
-// tmp
-const logger_1 = createOnceLog();
-const logger_2 = createOnceLog();
-
 export default class Diffy {
   constructor({
     tickFn = () => {},
     captureFn = () => {},
+    DiffWorker = () => {},
+    roundFn = () => {},
+    $ = () => {},
+    win = {},
     captureConfig = {
       audio: false,
       video: {
@@ -24,9 +21,12 @@ export default class Diffy {
     resolution = { x: 10, y: 5 }
   }) {
 
+    const _win = win;
 
-    this.tickFn = tickFn.bind(window);
+    this.tickFn = tickFn.bind(_win);
     this.captureFn = captureFn;
+    this.roundFn = roundFn;
+    this.$ = $;
 
     this.onFrame = onFrame;
 
@@ -47,15 +47,12 @@ export default class Diffy {
     this.sourceWidth = sourceDimensions.w;
     this.sourceHeight = sourceDimensions.h;
 
-    this.worker = new Worker;
+    this.worker = new DiffWorker;
 
     this.initialized = false;
 
-    window.addEventListener('load', this.init.bind(this));
+    _win.addEventListener('load', this.init.bind(this));
   }
-
-  static instanceExists = false;
-  static VERSION = '1.0.1';
 
   toVideo(blob, videoEl) {
     // piping blob to video element
@@ -68,7 +65,6 @@ export default class Diffy {
       .getContext('2d')
       .drawImage(video, 0, 0, canvas.width, canvas.height);
   }
-
 
   mirror(canvas) {
     const ctx = canvas.getContext('2d');
@@ -149,7 +145,7 @@ export default class Diffy {
           average += (cellImageData[k * 4] + cellImageData[k * 4 + 1] + cellImageData[k * 4 + 2]) / 3;
           ++ k;
         }
-        average = round(average / cellPixelCount);
+        average = this.roundFn(average / cellPixelCount);
         /* push the value in the row */
         row.push(average);
         average = 0;
@@ -169,15 +165,12 @@ export default class Diffy {
   }
 
   init() {
-
     this.worker.addEventListener('error', (e) => {
       throw e;
     });
-
     this.worker.addEventListener('message', ({ data }) => {
       this.drawBlendImageFromBuffer(data);
     });
-
     this.initDom(this.containerClassName);
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
     this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
@@ -253,6 +246,7 @@ export default class Diffy {
   injectCssStyles() {
     const node = document.createElement('style');
     const containerClassName = this.containerClassName;
+    const $ = this.$;
     const styles = `
       .${containerClassName} {
         position: fixed;
@@ -275,21 +269,9 @@ export default class Diffy {
         font-weight: 100;
         font-size: 16px;
       }
-      .${containerClassName} .toggle {
-        padding: 5px;
-      }
-
-      .${containerClassName} .view {
-        padding: 5px;
-      }
-
-      .${containerClassName} .view.hidden {
-        display: none;
-      }
-
-      .${containerClassName}.hidden {
-        display: none;
-      }
+      .${containerClassName} .toggle { padding: 5px; }
+      .${containerClassName} .view { padding: 5px; }
+      .${containerClassName} .view.hidden, .${containerClassName}.hidden { display: none; }
     `;
     node.innerHTML = styles;
     document.body.appendChild(node);
@@ -300,15 +282,9 @@ export default class Diffy {
     this.injectCssStyles();
   }
 
-  static create(options) {
-    if (Diffy.instanceExists) {
-      throw new Error(`
-        Yikes! It seems like a Diffy.js instance already exists on this page. :|
-        For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
-      `);
-    }
+  static VERSION = '1.0.1';
 
-    Diffy.instanceExists = true;
+  static create(options) {
     return new this(options);
   }
 }
