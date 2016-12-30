@@ -24,5 +24,5 @@ app.listen(port, (err) => {
   if (err) {
     console.log('Error: ', err);
   }
-  console.log(`> Diffy.js Demo server is running on: http://localhost:${port}`);
+  console.log(`> Diffy.js Dev server is running on: http://localhost:${port}`);
 })
