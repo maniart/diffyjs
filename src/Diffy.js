@@ -51,6 +51,8 @@ export default class Diffy {
 
     this.initialized = false;
 
+    this.VERSION = '1.0.1';
+
     _win.addEventListener('load', this.init.bind(this));
   }
 
@@ -281,8 +283,6 @@ export default class Diffy {
     this.createElements(containerClassName);
     this.injectCssStyles();
   }
-
-  static VERSION = '1.0.1';
 
   static create(options) {
     return new this(options);
