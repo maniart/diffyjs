@@ -5,6 +5,7 @@ export default class Diffy {
     DiffWorker = () => {},
     roundFn = () => {},
     $ = () => {},
+    win = {},
     captureConfig = {
       audio: false,
       video: {
@@ -20,7 +21,9 @@ export default class Diffy {
     resolution = { x: 10, y: 5 }
   }) {
 
-    this.tickFn = tickFn.bind(window);
+    const _win = win;
+
+    this.tickFn = tickFn.bind(_win);
     this.captureFn = captureFn;
     this.roundFn = roundFn;
     this.$ = $;
@@ -48,7 +51,7 @@ export default class Diffy {
 
     this.initialized = false;
 
-    window.addEventListener('load', this.init.bind(this));
+    _win.addEventListener('load', this.init.bind(this));
   }
 
   toVideo(blob, videoEl) {

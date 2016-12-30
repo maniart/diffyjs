@@ -43,6 +43,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     resolution,
     sensitivity,
     debug,
-    onFrame
+    onFrame,
+    win: window
   });
 }
