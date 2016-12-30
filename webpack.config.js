@@ -39,7 +39,7 @@ const devOutput = {
   filename: 'diffy.js'
 };
 const distOutput = {
-  filename: 'diffy.min.js' //todo minify dist output
+  filename: 'diffy.min.js'
 };
 const demoOutput = {
   filename: 'demo.min.js',//todo minify demo output
