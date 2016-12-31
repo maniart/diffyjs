@@ -32,9 +32,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     `);
   }
 
-  instanceExists = true;
-
-  return Diffy.create({
+  const diffy = Diffy.create({
     tickFn: requestAnimFrame,
     captureFn: capture,
     DiffWorker,
@@ -46,4 +44,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     win: window,
     doc: document
   });
+
+  instanceExists = true;
+  return diffy;
 }
