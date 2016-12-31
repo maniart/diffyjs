@@ -6,13 +6,6 @@ export default class Diffy {
     roundFn = () => {},
     win = {},
     doc = {},
-    captureConfig = {
-      audio: false,
-      video: {
-        width: 130,
-        height: 100
-      }
-    },
     debug = false,
     sourceDimensions = { w: 130, h: 100 },
     onFrame = () => {},
@@ -24,6 +17,18 @@ export default class Diffy {
 
     const _win = win;
     this.doc = doc;
+
+    const baseCaptureConfig = {
+      audio: false,
+      video: {
+        width: 130,
+        height: 100
+      }
+    };
+
+    this.captureConfig = Object.assign({}, baseCaptureConfig, {
+      video: { width: sourceDimensions.w, height: sourceDimensions.h}
+    });
 
     this.tickFn = tickFn.bind(_win);
     this.captureFn = captureFn;
@@ -43,8 +48,6 @@ export default class Diffy {
     this.debug = debug;
     this.containerClassName = containerClassName;
     this.debugViewCollapsed = false;
-
-    this.captureConfig = captureConfig;
 
     this.sourceWidth = sourceDimensions.w;
     this.sourceHeight = sourceDimensions.h;
