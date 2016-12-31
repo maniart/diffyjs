@@ -66,18 +66,17 @@ var diffy = Diffy.create({
 Creates and returns a Diffy.js instance. It will request camera access as soon as the web page loads and will immediately begin executing the provided callback function.
 
 #####Arguments
-```
-options (object) {
-  resolution (object - defines the size of the output matrix) {	
-  	x (number - resolution along the X axis)
-  	y (number - resolution along the Y axis)
-  },
-  sensitivity (number - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers),
-  threshold (number - any number between 0 and 255 can be user. but _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registes as "movement" for Diffy.),
+
+- **options** (object)
+	- **resolution** (object) - defines the size of the output matrix 
+		- x (number) - resolution along the X axis
+		- y (number) - resolution along the Y axis
+	- **sensitivity** (number) - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers!
+	- **threshold** (number) [default: ]any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registes as "movement" for Diffy)
   debug (boolean - )
   onFrame
 }
-```
+
 
 Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
 
