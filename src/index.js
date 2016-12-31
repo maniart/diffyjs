@@ -4,11 +4,11 @@ import Diffy from './Diffy';
 import requestAnimFrame from './raf';
 import capture from './capture';
 import DiffWorker from 'worker-loader?inline!./worker';
-import { $, round } from './utils';
+import { round } from './utils';
 
 let instanceExists = false;
 
-export const create = ({ resolution, sensitivity, debug, onFrame }) => {
+export const create = ({ resolution, sensitivity, threshold, debug, onFrame }) => {
 
   if(!window) {
     throw new Error(`
@@ -17,7 +17,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     `);
   }
 
-  if(!'Worker' in window) {
+  if(!('Worker' in window)) {
     throw new Error(`
       Diffy.js requires Web Workers.
       It looks like this environment does not support this feature. :(
@@ -32,18 +32,20 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     `);
   }
 
-  instanceExists = true;
-
-  return Diffy.create({
+  const diffy = Diffy.create({
     tickFn: requestAnimFrame,
     captureFn: capture,
     DiffWorker,
     roundFn: round,
-    $,
     resolution,
     sensitivity,
+    threshold,
     debug,
     onFrame,
-    win: window
+    win: window,
+    doc: document
   });
+
+  instanceExists = true;
+  return diffy;
 }
