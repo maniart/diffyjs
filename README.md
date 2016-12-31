@@ -1,18 +1,33 @@
-## Synopsis
+![Diffy.js](./logo.png =400x141)
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+### A dependency-free motion detection library for the browser. 
+This library came out of my [browser-based interactive experiments](http://maniartstudio.com/#the-night) and from the need to extract motion data from the webcam through the `getUserMedia` API. This is the cleaned up version of that code. Hat tip to [Soundstep](http://www.soundstep.com/blog/2012/03/22/javascript-motion-detection/) for the technique used in this library.	
 
-## Code Example
+## Overview
+Basically, Diffy.js grabs two consectives webcam snapshots in each tick of the loop (via `requestAnimationFrame`) & combines them into a high contrast blended image to create a "diff image".  This image can be adjusted from the API via `sensitivity` and `threshold` parameters. Based on a `resolution: {x, y}` parameter from the API, Diffy.js will create a matrix containing average values from this image. This matrix is then passed as the only argument to a recursively-executed callback function provided by the user: `onFrame: function(matrix) { /* draw something */ }`. A Web Worker is used to speed up image processing. A simple visual debugger can be optionally turned on as you experiment with values. 
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+![Debug Screenshot](./screenshot.jpg =750x482)
 
-## Motivation
+_Screenshot from `demo/:` Raw webcam input, Mirrored raw canvas, "diff" image canvas, a simple canvas experiment with Diffy.js_
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+## Usage
+
+If using es2015 ala [Babel](http://babeljs.io/)
+
 
 ## Installation
+Using npm:
 
-Provide code examples and explanations of how to get the project.
+`npm install diffyjs --save`
+
+Using bower:
+
+`bower install diffyjs --save`
+
+You can also use git:
+
+
+## Development
 
 ## API Reference
 
