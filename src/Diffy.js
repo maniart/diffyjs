@@ -251,7 +251,7 @@ export default class Diffy {
         position: fixed;
         top: 0;
         left: 0;
-        font-family: monospace;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background-color: #000;
         border: 4px solid #000;
         color: #fff;
@@ -265,7 +265,8 @@ export default class Diffy {
       .${containerClassName} .title {
         display: inline;
         margin-left: 10px;
-        font-weight: 100;
+        font-weight: 300;
+        letter-spacing: 2px;
         font-size: 16px;
       }
       .${containerClassName} .toggle { padding: 5px; }
