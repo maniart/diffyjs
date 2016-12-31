@@ -8,7 +8,7 @@ import { round } from './utils';
 
 let instanceExists = false;
 
-export const create = ({ resolution, sensitivity, debug, onFrame }) => {
+export const create = ({ resolution, sensitivity, threshold, debug, onFrame }) => {
 
   if(!window) {
     throw new Error(`
@@ -39,6 +39,7 @@ export const create = ({ resolution, sensitivity, debug, onFrame }) => {
     roundFn: round,
     resolution,
     sensitivity,
+    threshold,
     debug,
     onFrame,
     win: window,

@@ -6,7 +6,7 @@ let average2;
 let delta;
 let actualSensitivity;
 
-const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity } }) => {
+const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity, threshold } }) => {
   let i = 0;
   actualSensitivity = 1 - sensitivity;
 
@@ -17,7 +17,7 @@ const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensiti
       average1 = ((data1[i * 4] + data1[i * 4 + 1] + data1[i * 4 + 2]) / 3) / actualSensitivity;
       average2 = ((data2[i * 4] + data2[i * 4 + 1] + data2[i * 4 + 2]) / 3) / actualSensitivity;
       delta = polarize(
-        abs(average1 - average2), 0x15
+        abs(average1 - average2), threshold
       );
       pixelData[i] =
         (255   << 24) |     // alpha

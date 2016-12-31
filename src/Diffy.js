@@ -17,6 +17,7 @@ export default class Diffy {
     sourceDimensions = { w: 130, h: 100 },
     onFrame = () => {},
     sensitivity = 0.2,
+    threshold = 21,
     containerClassName = 'diffy--debug-view',
     resolution = { x: 10, y: 5 }
   }) {
@@ -37,6 +38,7 @@ export default class Diffy {
     this.resolutionY = resolution.y;
 
     this.sensitivity = sensitivity;
+    this.threshold = threshold;
 
     this.debug = debug;
     this.containerClassName = containerClassName;
@@ -86,6 +88,7 @@ export default class Diffy {
       data1,
       data2,
       sensitivity: this.sensitivity,
+      threshold: this.threshold,
       width: this.sourceWidth,
       height: this.sourceHeight
     });
