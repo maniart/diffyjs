@@ -7,7 +7,7 @@ Basically, Diffy.js grabs two consectives webcam snapshots in each tick of the l
 
 <img src="./screenshot.jpg" width="752" height="482" /> 
 
-<sup>_Screenshot from `demo/:` Raw webcam input, Mirrored raw canvas, "diff" image canvas, a simple canvas experiment with Diffy.js_</sup>
+<sup>_Screenshot from `demo/`: Raw webcam input, Mirrored raw canvas, "diff" image canvas, a simple canvas experiment with Diffy.js_</sup>
 
 
 ## Installation
@@ -68,30 +68,38 @@ Creates and returns a Diffy.js instance. It will request camera access as soon a
 #####Arguments
 
 - **options** (object)
-	- **resolution** (object) - defines the size of the output matrix 
-		- x (number) - resolution along the X axis
-		- y (number) - resolution along the Y axis
-	- **sensitivity** (number) - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers!
-	- **threshold** (number) [default: ]any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registes as "movement" for Diffy)
-  debug (boolean - )
-  onFrame
-}
-
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+	- **resolution** (object) [default: `{ x: 10, y : 5}`] - defines the size of the output matrix 
+		- x (number) [default: `10`]] - resolution along the X axis
+		- y (number) [default: `5`] - resolution along the Y axis
+	- **sensitivity** (number) [default: `0.2`] - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers!
+	- **threshold** (number) [default: `21`] - any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registes as "movement" for Diffy)
+    - **debug** (boolean) [default: `false`] - hides or shows the Dify debug view. Please note that to work with video and pixel data, Diffy.js *will* add a few DOM ndoes & a minimal `style` tag to your page. However, they are hidden unless `debug` flag is set to `true`.
+    - **sourceDimensions** (object) [default: `{ x: 130, h: 100 }`] - defines the dimensions for the source frame
+    	-  x (number) [default: `130`] - width of the source frame
+    	-  y (number) [default: `100`] - height of the source frame
+    - **containerClassName** (string) [default: `diffy--debug-view`] - defines the class name for the container element that wraps around Diffy.js debug view. Debug view is hidden by default, unless the `debug` flag is set to `true`.
+    - **onFrame** (function) [default: `() => {}`] - callback function executed recursively at each tick of the loop by Diffy.js via `requestAnimationFrame` API. Diffy.js provides this function with the motion matrix as the only argument. 
 
 ## Development
+This project uses Node.js `v6.9.1`, Babel `v6.18.0` and Webpack `v1.13.2`.
+After cloning the repo, install the dev dependencies from the project root via `npm install`.
+At this point, you should be able to run `npm start` to start the development server at `http://localhost:3000`. 
+`npm start` will watch source files in `src` for changes, recompiles the changes files and serves them from the memory. In order to produce build artifacts, run `npm run build`. This will output the build files and source maps in `dist/` and `demo/dist` 
+
+## Demo
+To run the demo included in the project, run `npm run demo` from the root. This script will create build artifacts in `dist/` and `demo/dist` and start a demo server at `http://localhost:4000`. 
 
 ## Tests
 
 As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm run test` from the project root. New releases will include better test coverage.  
 
-## Contributors
+## Contribute
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Contributions / comments much welcome! [Open a Pull Request](https://github.com/maniart/diffyjs/pulls) and lets work together? 
 
 ## Issues
+Please report issues [here](https://github.com/maniart/diffyjs/issues).
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+MIT. See [LICENSE](./License)
