@@ -6,7 +6,7 @@ let average2;
 let delta;
 let actualSensitivity;
 
-const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity, threshold } }) => {
+const createDiffBuffer = ({ data: { buffer, data1, data2, width, height, sensitivity, threshold }}) => {
   let i = 0;
   actualSensitivity = 1 - sensitivity;
 
