@@ -1,6 +1,6 @@
 {
   "name": "diffyjs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A dependency-free motion detection library for the browser",
   "main": "dist/diffy.min.js",
   "scripts": {
@@ -9,13 +9,12 @@
     "demo": "run-s build serve:demo",
     "serve:dev": "export WEBPACK_ENV=dev; node_modules/.bin/babel-node tools/dev-server.js",
     "serve:demo": "node_modules/.bin/babel-node tools/demo-server.js",
-    "build": "run-s clean build:dist build:demo npmignore",
+    "build": "run-s clean build:dist build:demo",
     "build:dist": "export WEBPACK_ENV=dist; node -r babel-register node_modules/.bin/webpack",
     "build:demo": "export WEBPACK_ENV=demo; node -r babel-register node_modules/.bin/webpack",
     "lint": "node_modules/.bin/esw webpack.config.* src tools demo/src",
     "lint:watch": "npm run lint -- --watch",
-    "test": "./node_modules/.bin/mocha --compilers js:babel-register",
-    "npmignore": "touch dist/.npmignore touch demo/dist/.npmignore"
+    "test": "./node_modules/.bin/mocha --compilers js:babel-register"
   },
   "repository": {
     "type": "git",

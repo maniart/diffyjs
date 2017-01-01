@@ -1,34 +1,110 @@
-## Synopsis
+#Diffy.js
+### A dependency-free motion detection library for the browser. 
+This library came out of my [browser-based interactive experiments](http://maniartstudio.com/#the-night) and from the need to extract motion data from the webcam through the `getUserMedia` API. This is the cleaned up version of that code. Hat tip to [Soundstep](http://www.soundstep.com/blog/2012/03/22/javascript-motion-detection/) for the technique used in this library.	
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+## Overview
+Basically, Diffy.js grabs two consectives webcam snapshots in each tick of the loop (via `requestAnimationFrame`) & combines them into a high contrast blended image to create a "diff image".  This image can be adjusted from the API via `sensitivity` and `threshold` parameters. Based on a `resolution: {x, y}` parameter from the API, Diffy.js will create a matrix containing average values from this image. This matrix is then passed as the only argument to a recursively-executed callback function provided by the user: `onFrame: function(matrix) { /* draw something */ }`. A Web Worker is used to speed up image processing. A simple visual debugger can be optionally turned on as you experiment with values. 
 
-## Code Example
+<img src="./screenshot.jpg" width="752" height="482" /> 
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+<sup>_Screenshot from `demo/`: Raw webcam input, Mirrored raw canvas, "diff" image canvas, a simple canvas experiment with Diffy.js_</sup>
 
-## Motivation
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
 
 ## Installation
+npm: `npm install diffyjs --save`
 
-Provide code examples and explanations of how to get the project.
+Bower: `bower install diffyjs --save`
+
+Git: `git clone https://github.com/maniart/diffyjs.git`
+
+
+## Usage
+
+With ES2015 via [Babel](http://babeljs.io/):
+
+```
+import { create } from 'diffyjs';
+
+const diffy = create({
+  resolution: { x: 15, y: 10 },
+  sensitivity: 0.2,
+  threshold: 25,
+  debug: true,
+  containerClassName: 'my-diffy-container',
+  sourceDimensions: { w: 130, h: 100 },
+  onFrame: (matrix) => { /* good things */ }
+});
+```
+
+With ES5 via `<script>` tag:
+
+```
+// HTML: 
+// <script src="/path/to/diffy.min.js"></script>
+
+// JS:
+var diffy = Diffy.create({
+  resolution: { x: 15, y: 10 },
+  sensitivity: 0.2,
+  threshold: 25,
+  debug: true,
+  containerClassName: 'my-diffy-container',
+  sourceDimensions: { w: 130, h: 100 },  
+  onFrame: function (matrix) { /* good things */ }
+});
+```
+
+## A few things to keep in mind
+- Diffy.js is meant to be used in a Browser environment
+- The library will request camera access upon loading of the web page. Choose `Allow` to proceed.
+- It also requires [Web Workers](http://caniuse.com/#search=web%20worker). 
+- Any hosted project using the `getUserMedia` API (including Diffy.js), [must be served over `HTTPS`](http://stackoverflow.com/questions/34197653/getusermedia-in-chrome-47-without-using-https), but you can easily run it on `localhost`.
+- Diffy.js is designed to allow 1 instance on each page. Further instantiation attempts will throw.
+
+
+
 
 ## API Reference
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+#### #create(options)
+Creates and returns a Diffy.js instance. It will request camera access as soon as the web page loads and will immediately begin executing the provided callback function.
+
+#####Arguments
+
+- **options** (object)
+	- **resolution** (object) [default: `{x: 10, y: 5}`] - defines the size of the output matrix 
+		- x (number) [default: `10`] - resolution along the X axis
+		- y (number) [default: `5`] - resolution along the Y axis
+	- **sensitivity** (number) [default: `0.2`] - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers!
+	- **threshold** (number) [default: `21`] - any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registers as "movement" for Diffy.js)
+    - **debug** (boolean) [default: `false`] - hides or shows the debug view. Please note that to work with video and pixel data, Diffy.js *will* add a few DOM nodes & a minimal `style` tag to your page. However, they are hidden unless `debug` flag is set to `true`.
+    - **sourceDimensions** (object) [default: `{x: 130, h: 100}`] - defines the dimensions for the source frame. Keep in mind that the larger the dimensions, the more pixels Diffy.js needs to examine, hence the lower the performance. 
+    	-  x (number) [default: `130`] - width of the source frame
+    	-  y (number) [default: `100`] - height of the source frame
+    - **containerClassName** (string) [default: `diffy--debug-view`] - defines the class name for the container element that wraps around Diffy.js debug view. Debug view is hidden by default, unless the `debug` flag is set to `true`.
+    - **onFrame** (function) [default: `() => {}`] - callback function executed recursively at each tick of the loop by Diffy.js via `requestAnimationFrame` API. Diffy.js provides this function with the motion matrix as the only argument. 
+
+
+## Development
+This project uses Node.js `v6.9.1`, Babel `v6.18.0` and Webpack `v1.13.2`.
+After cloning the repo, install the dev dependencies from the project root via `npm install`.
+At this point, you should be able to run `npm start` to start the development server at `http://localhost:3000`. 
+`npm start` will watch source files in `src` for changes, recompiles the changes files and serves them from the memory. In order to produce build artifacts, run `npm run build`. This will output the build files and source maps in `dist/` and `demo/dist` 
+
+## Demo
+To run the demo included in the project, run `npm run demo` from the root. This script will create build artifacts in `dist/` and `demo/dist` and start a demo server at `http://localhost:4000`. 
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm run test` from the project root. New releases will include better test coverage.  
 
-## Contributors
+## Contribute
 
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
+Contributions / comments much welcome! [Open a Pull Request](https://github.com/maniart/diffyjs/pulls) and lets work together? 
+
+## Issues
+Please report issues [here](https://github.com/maniart/diffyjs/issues).
 
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
-#Diffy.js
-###A standalone motion detection library for the browser
-todo
+MIT. See LICENSE
