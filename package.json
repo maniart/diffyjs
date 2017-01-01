@@ -1,7 +1,7 @@
 {
   "name": "diffyjs",
-  "version": "1.0.1",
-  "description": "A client-side JS motion detection library",
+  "version": "1.1.0",
+  "description": "A dependency-free motion detection library for the browser",
   "main": "dist/diffy.min.js",
   "scripts": {
     "clean": "rm -rf dist/ demo/dist",
@@ -12,10 +12,9 @@
     "build": "run-s clean build:dist build:demo",
     "build:dist": "export WEBPACK_ENV=dist; node -r babel-register node_modules/.bin/webpack",
     "build:demo": "export WEBPACK_ENV=demo; node -r babel-register node_modules/.bin/webpack",
-    "lint": "node_modules/.bin/esw webpack.config.* src tools",
+    "lint": "node_modules/.bin/esw webpack.config.* src tools demo/src",
     "lint:watch": "npm run lint -- --watch",
-    "test": "mocha --reporter progress tools/test-setup.js \"src/**/*.test.js\"",
-    "test:watch": "npm run test -- --watch"
+    "test": "./node_modules/.bin/mocha --compilers js:babel-register"
   },
   "repository": {
     "type": "git",
@@ -31,10 +30,10 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.0",
     "babel-loader": "^6.2.5",
-    "babel-plugin-transform-class-properties": "^6.19.0",
     "babel-polyfill": "^6.20.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.18.0",
+    "chai": "*",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-loader": "^1.6.0",
@@ -42,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-watch": "^2.1.14",
     "express": "^4.14.0",
+    "mocha": "*",
     "npm-run-all": "^3.1.2",
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "1.6.1",

@@ -1,32 +1,38 @@
-import Worker from 'worker-loader?inline!./worker';
-import { createOnceLog, $, round } from './utils';
-
-// tmp
-const logger_1 = createOnceLog();
-const logger_2 = createOnceLog();
-
 export default class Diffy {
   constructor({
     tickFn = () => {},
     captureFn = () => {},
-    captureConfig = {
+    DiffWorker = () => {},
+    roundFn = () => {},
+    win = {},
+    doc = {},
+    debug = false,
+    sourceDimensions = { w: 130, h: 100 },
+    onFrame = () => {},
+    sensitivity = 0.2,
+    threshold = 21,
+    containerClassName = 'diffy--debug-view',
+    resolution = { x: 10, y: 5 }
+  }) {
+
+    const _win = win;
+    this.doc = doc;
+
+    const baseCaptureConfig = {
       audio: false,
       video: {
         width: 130,
         height: 100
       }
-    },
-    debug = false,
-    sourceDimensions = { w: 130, h: 100 },
-    onFrame = (matrix) => {},
-    sensitivity = 0.2,
-    containerClassName = 'diffy--debug-view',
-    resolution = { x: 10, y: 5 }
-  }) {
+    };
 
+    this.captureConfig = Object.assign({}, baseCaptureConfig, {
+      video: { width: sourceDimensions.w, height: sourceDimensions.h}
+    });
 
-    this.tickFn = tickFn.bind(window);
+    this.tickFn = tickFn.bind(_win);
     this.captureFn = captureFn;
+    this.roundFn = roundFn;
 
     this.onFrame = onFrame;
 
@@ -37,25 +43,23 @@ export default class Diffy {
     this.resolutionY = resolution.y;
 
     this.sensitivity = sensitivity;
+    this.threshold = threshold;
 
     this.debug = debug;
     this.containerClassName = containerClassName;
     this.debugViewCollapsed = false;
 
-    this.captureConfig = captureConfig;
-
     this.sourceWidth = sourceDimensions.w;
     this.sourceHeight = sourceDimensions.h;
 
-    this.worker = new Worker;
+    this.worker = new DiffWorker;
 
     this.initialized = false;
 
-    window.addEventListener('load', this.init.bind(this));
-  }
+    this.VERSION = '1.1.0';
 
-  static instanceExists = false;
-  static VERSION = '1.0.1';
+    _win.addEventListener('load', this.init.bind(this));
+  }
 
   toVideo(blob, videoEl) {
     // piping blob to video element
@@ -68,7 +72,6 @@ export default class Diffy {
       .getContext('2d')
       .drawImage(video, 0, 0, canvas.width, canvas.height);
   }
-
 
   mirror(canvas) {
     const ctx = canvas.getContext('2d');
@@ -88,6 +91,7 @@ export default class Diffy {
       data1,
       data2,
       sensitivity: this.sensitivity,
+      threshold: this.threshold,
       width: this.sourceWidth,
       height: this.sourceHeight
     });
@@ -120,8 +124,6 @@ export default class Diffy {
   createMatrix() {
     let i;
     let j;
-    let posX;
-    let posY;
     let k = 0;
 
     const matrix = [];
@@ -137,7 +139,7 @@ export default class Diffy {
     let average = 0;
 
     for(i = 0; i < sourceWidth; i += cellWidth) {
-      let row = [];
+      const row = [];
 
       for(j = 0; j < sourceHeight; j += cellHeight) {
         cellImageData = this.blendCanvasCtx.getImageData(i, j, cellWidth, cellHeight).data;
@@ -149,7 +151,7 @@ export default class Diffy {
           average += (cellImageData[k * 4] + cellImageData[k * 4 + 1] + cellImageData[k * 4 + 2]) / 3;
           ++ k;
         }
-        average = round(average / cellPixelCount);
+        average = this.roundFn(average / cellPixelCount);
         /* push the value in the row */
         row.push(average);
         average = 0;
@@ -169,15 +171,12 @@ export default class Diffy {
   }
 
   init() {
-
     this.worker.addEventListener('error', (e) => {
       throw e;
     });
-
     this.worker.addEventListener('message', ({ data }) => {
       this.drawBlendImageFromBuffer(data);
     });
-
     this.initDom(this.containerClassName);
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
     this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
@@ -191,33 +190,33 @@ export default class Diffy {
   }
 
   createElements(containerClassName) {
-    this.containerEl = document.createElement('div');
+    this.containerEl = this.doc.createElement('div');
     this.containerEl.className = containerClassName;
 
-    this.videoEl = document.createElement('video');
+    this.videoEl = this.doc.createElement('video');
     this.videoEl.className = 'video view';
     this.videoEl.setAttribute('autoplay', '');
     this.videoEl.width = this.sourceWidth;
     this.videoEl.height = this.sourceHeight;
 
-    this.rawCanvasEl = document.createElement('canvas');
+    this.rawCanvasEl = this.doc.createElement('canvas');
     this.rawCanvasEl.className = 'canvas--raw view';
     this.rawCanvasEl.width = this.sourceWidth;
     this.rawCanvasEl.height = this.sourceHeight;
 
-    this.blendCanvasEl = document.createElement('canvas');
+    this.blendCanvasEl = this.doc.createElement('canvas');
     this.blendCanvasEl.className = 'canvas--blend view';
     this.blendCanvasEl.width = this.sourceWidth;
     this.blendCanvasEl.height = this.sourceHeight;
 
-    this.headerEl = document.createElement('header');
+    this.headerEl = this.doc.createElement('header');
     this.headerEl.className = 'header';
 
-    this.titleEl = document.createElement('h1');
+    this.titleEl = this.doc.createElement('h1');
     this.titleEl.className = 'title';
     this.titleEl.innerText = 'Diffy debug view';
 
-    this.toggleEl = document.createElement('span');
+    this.toggleEl = this.doc.createElement('span');
     this.toggleEl.className = 'toggle';
     this.toggleEl.innerText = '-';
 
@@ -243,7 +242,7 @@ export default class Diffy {
     this.containerEl.appendChild(this.rawCanvasEl);
     this.containerEl.appendChild(this.blendCanvasEl);
 
-    document.body.appendChild(this.containerEl);
+    this.doc.body.appendChild(this.containerEl);
 
     if (!this.debug) {
       this.containerEl.classList.add('hidden');
@@ -251,14 +250,14 @@ export default class Diffy {
   }
 
   injectCssStyles() {
-    const node = document.createElement('style');
+    const node = this.doc.createElement('style');
     const containerClassName = this.containerClassName;
     const styles = `
       .${containerClassName} {
         position: fixed;
         top: 0;
         left: 0;
-        font-family: monospace;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         background-color: #000;
         border: 4px solid #000;
         color: #fff;
@@ -272,27 +271,16 @@ export default class Diffy {
       .${containerClassName} .title {
         display: inline;
         margin-left: 10px;
-        font-weight: 100;
+        font-weight: 300;
+        letter-spacing: 2px;
         font-size: 16px;
       }
-      .${containerClassName} .toggle {
-        padding: 5px;
-      }
-
-      .${containerClassName} .view {
-        padding: 5px;
-      }
-
-      .${containerClassName} .view.hidden {
-        display: none;
-      }
-
-      .${containerClassName}.hidden {
-        display: none;
-      }
+      .${containerClassName} .toggle { padding: 5px; }
+      .${containerClassName} .view { padding: 5px; }
+      .${containerClassName} .view.hidden, .${containerClassName}.hidden { display: none; }
     `;
     node.innerHTML = styles;
-    document.body.appendChild(node);
+    this.doc.body.appendChild(node);
   }
 
   initDom(containerClassName) {
@@ -301,14 +289,6 @@ export default class Diffy {
   }
 
   static create(options) {
-    if (Diffy.instanceExists) {
-      throw new Error(`
-        Yikes! It seems like a Diffy.js instance already exists on this page. :|
-        For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
-      `);
-    }
-
-    Diffy.instanceExists = true;
     return new this(options);
   }
 }
