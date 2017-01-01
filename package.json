@@ -1,6 +1,6 @@
 {
   "name": "diffyjs",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A dependency-free motion detection library for the browser",
   "main": "dist/diffy.min.js",
   "scripts": {
