@@ -107,4 +107,4 @@ Please report issues [here](https://github.com/maniart/diffyjs/issues).
 
 ## License
 
-MIT. See [LICENSE](./License)
+MIT. See LICENSE
