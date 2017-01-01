@@ -30,6 +30,8 @@ const diffy = create({
   sensitivity: 0.2,
   threshold: 25,
   debug: true,
+  containerClassName: 'my-diffy-container',
+  sourceDimensions: { w: 130, h: 100 },
   onFrame: (matrix) => { /* good things */ }
 });
 ```
@@ -46,6 +48,8 @@ var diffy = Diffy.create({
   sensitivity: 0.2,
   threshold: 25,
   debug: true,
+  containerClassName: 'my-diffy-container',
+  sourceDimensions: { w: 130, h: 100 },  
   onFrame: function (matrix) { /* good things */ }
 });
 ```
@@ -68,17 +72,18 @@ Creates and returns a Diffy.js instance. It will request camera access as soon a
 #####Arguments
 
 - **options** (object)
-	- **resolution** (object) [default: `{ x: 10, y : 5}`] - defines the size of the output matrix 
-		- x (number) [default: `10`]] - resolution along the X axis
+	- **resolution** (object) [default: `{x: 10, y: 5}`] - defines the size of the output matrix 
+		- x (number) [default: `10`] - resolution along the X axis
 		- y (number) [default: `5`] - resolution along the Y axis
 	- **sensitivity** (number) [default: `0.2`] - a decimal value between 0 and 1. It impacts the contrast of the blended image. Somewhere around 0.2 is usually good. yay magic numbers!
-	- **threshold** (number) [default: `21`] - any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registes as "movement" for Diffy)
-    - **debug** (boolean) [default: `false`] - hides or shows the Dify debug view. Please note that to work with video and pixel data, Diffy.js *will* add a few DOM ndoes & a minimal `style` tag to your page. However, they are hidden unless `debug` flag is set to `true`.
-    - **sourceDimensions** (object) [default: `{ x: 130, h: 100 }`] - defines the dimensions for the source frame
+	- **threshold** (number) [default: `21`] - any number between 0 and 255 can be used. But _ahem_ magic numbers are around 20 and 25. Experiment with this. This parameter defines the minimum average value that registers as "movement" for Diffy.js)
+    - **debug** (boolean) [default: `false`] - hides or shows the debug view. Please note that to work with video and pixel data, Diffy.js *will* add a few DOM nodes & a minimal `style` tag to your page. However, they are hidden unless `debug` flag is set to `true`.
+    - **sourceDimensions** (object) [default: `{x: 130, h: 100}`] - defines the dimensions for the source frame. Keep in mind that the larger the dimensions, the more pixels Diffy.js needs to examine, hence the lower the performance. 
     	-  x (number) [default: `130`] - width of the source frame
     	-  y (number) [default: `100`] - height of the source frame
     - **containerClassName** (string) [default: `diffy--debug-view`] - defines the class name for the container element that wraps around Diffy.js debug view. Debug view is hidden by default, unless the `debug` flag is set to `true`.
     - **onFrame** (function) [default: `() => {}`] - callback function executed recursively at each tick of the loop by Diffy.js via `requestAnimationFrame` API. Diffy.js provides this function with the motion matrix as the only argument. 
+
 
 ## Development
 This project uses Node.js `v6.9.1`, Babel `v6.18.0` and Webpack `v1.13.2`.
