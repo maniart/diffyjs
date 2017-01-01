@@ -17,7 +17,7 @@
   "moduleType": [
     "amd",
     "globals",
-    "node"
+    "node",
     "es6"
   ],
   "ignore": [
