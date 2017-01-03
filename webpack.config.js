@@ -55,10 +55,10 @@ let es6LoaderConfig = {
   loaders: ['babel']
 };
 const devAndDistEs6LoaderConfig = {
-  include: path.resolve(__dirname, 'src'),
+  include: path.resolve(__dirname, 'src')
 };
 const demoEs6LoaderConfig = {
-  exclude: [/node_modules/, /bower_components/]
+  include: path.resolve(__dirname, 'demo/src')
 };
 
 /*
