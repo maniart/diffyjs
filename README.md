@@ -3,7 +3,7 @@
 This library came out of my [browser-based interactive experiments](http://mani.io/portfolio/the-night/) and from the need to extract motion data from the webcam through the `getUserMedia` API. This is the cleaned up version of that code. Hat tip to [Soundstep](http://www.soundstep.com/blog/2012/03/22/javascript-motion-detection/) for the technique used in this library.
 
 ## Overview
-Basically, Diffy.js grabs two consectives webcam snapshots in each tick of the loop (via `requestAnimationFrame`) & combines them into a high contrast blended image to create a "diff image".  This image can be adjusted from the API via `sensitivity` and `threshold` parameters. Based on a `resolution: {x, y}` parameter from the API, Diffy.js will create a matrix containing average values from this image. This matrix is then passed as the only argument to a recursively-executed callback function provided by the user: `onFrame: function(matrix) { /* draw something */ }`. A Web Worker is used to speed up image processing. A simple visual debugger can be optionally turned on as you experiment with values.
+Basically, Diffy.js grabs two consective webcam snapshots in each tick of the loop (via `requestAnimationFrame`) & combines them into a high contrast blended image to create a "diff image".  This image can be adjusted from the API via `sensitivity` and `threshold` parameters. Based on a `resolution: {x, y}` parameter from the API, Diffy.js will create a matrix containing average values from this image. This matrix is then passed as the only argument to a recursively-executed callback function provided by the user: `onFrame: function(matrix) { /* draw something */ }`. A Web Worker is used to speed up image processing. A simple visual debugger can be optionally turned on as you experiment with values.
 
 <img src="https://raw.githubusercontent.com/maniart/diffyjs/master/screenshot.jpg" width="752" height="482" />
 
@@ -22,7 +22,7 @@ Git: `git clone https://github.com/maniart/diffyjs.git`
 
 With ES2015 via [Babel](http://babeljs.io/):
 
-```
+```js
 import { create } from 'diffyjs';
 
 const diffy = create({
@@ -38,10 +38,11 @@ const diffy = create({
 
 With ES5 via `<script>` tag:
 
+```html
+<!-- HTML: -->
+<script src="/path/to/diffy.min.js"></script>
 ```
-// HTML:
-// <script src="/path/to/diffy.min.js"></script>
-
+```js
 // JS:
 var diffy = Diffy.create({
   resolution: { x: 15, y: 10 },
