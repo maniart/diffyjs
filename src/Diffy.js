@@ -56,7 +56,7 @@ export default class Diffy {
 
     this.initialized = false;
 
-    this.VERSION = '1.2.2';
+    this.VERSION = '1.3.2';
 
     _win.addEventListener('load', this.init.bind(this));
   }
