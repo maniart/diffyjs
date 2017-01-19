@@ -101,7 +101,7 @@ To run the demo included in the project:
 
 ## Tests
 
-As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm run test` from the project root. New releases will include better test coverage.
+As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm test` from the project root. New releases will include better test coverage.
 
 ## Contribute
 
