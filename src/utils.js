@@ -25,7 +25,7 @@ export const $ = (selector) => document.querySelector(selector);
 export const round = (number) => (number + .5) >> 0;
 
 /*
-  butwise Math.abs
+  bitwise Math.abs
 */
 export const abs = (value) => (value ^ (value >> 31)) - (value >> 31);
 
