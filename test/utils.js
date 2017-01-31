@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { round } from '../src/utils';
+import { round, abs } from '../src/utils';
 
 describe('utils', () => {
 
@@ -15,6 +15,50 @@ describe('utils', () => {
 
     it('rounds 9238422.8734282342 to 9238423', () => {
       expect(round(9238422.8734282342)).to.equal(9238423);
+    });
+
+    it('rounds 0 to 0', () => {
+      expect(round(0)).to.equal(0);
+    });
+
+    it('rounds -0 to 0', () => {
+      expect(round(-0)).to.equal(0);
+    });
+
+    it('rounds undefined to 0', () => {
+      expect(round(undefined)).to.equal(0);
+    });
+
+    it('rounds null to 0', () => {
+      expect(round(null)).to.equal(0);
+    });
+
+  });
+
+  describe('bitwise Math.abs', () => {
+
+    it('absolute equals 82736 from 82736.091283913401034', () => {
+      expect(abs(82736.091283913401034)).to.equal(82736);
+    });
+
+    it('absolute equals 82736 from -82736.091283913401034', () => {
+      expect(abs(-82736.091283913401034)).to.equal(82736);
+    });
+
+    it('absolute equals 0 from 0', () => {
+      expect(abs(0)).to.equal(0);
+    });
+
+    it('absolute equals 0 from -0', () => {
+      expect(abs(-0)).to.equal(0);
+    });
+
+    it('absolute equals 0 from undefined', () => {
+      expect(round(undefined)).to.equal(0);
+    });
+
+    it('absolute equals 0 from null', () => {
+      expect(round(null)).to.equal(0);
     });
 
   });
