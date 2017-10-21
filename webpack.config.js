@@ -24,6 +24,21 @@ const demoEntry = [
 ];
 
 /*
+  Define the es6 loader configuration object.
+  Based on `ENV`, we will conditionally extend it properly.
+*/
+let es6LoaderConfig = {
+  test: /\.js$/,
+  use: ['babel-loader']
+};
+const devAndDistEs6LoaderConfig = {
+  include: path.resolve(__dirname, 'src')
+};
+const demoEs6LoaderConfig = {
+  include: path.resolve(__dirname, 'demo/src')
+};
+
+/*
   Define `output` object.
   Based on `ENV`, we will conditionally extend it properly.
 */
@@ -44,21 +59,6 @@ const distOutput = {
 const demoOutput = {
   filename: 'demo.min.js',//todo minify demo output
   path: path.resolve(__dirname, 'demo/dist')
-};
-
-/*
-  Define the es6 loader configuration object.
-  Based on `ENV`, we will conditionally extend it properly.
-*/
-let es6LoaderConfig = {
-  test: /\.js$/,
-  loaders: ['babel']
-};
-const devAndDistEs6LoaderConfig = {
-  include: path.resolve(__dirname, 'src')
-};
-const demoEs6LoaderConfig = {
-  include: path.resolve(__dirname, 'demo/src')
 };
 
 /*
@@ -106,20 +106,18 @@ switch(ENV) {
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
 }
 
-export default {
-  debug: true,
-  devtool: 'source-map',
-  noInfo: false,
+const config = {
+  context: path.resolve(__dirname, 'src'),
   entry,
-  target: 'web',
   output,
-  devServer: {
-    contentBase: path.resolve(__dirname, 'src')
-  },
   plugins,
+  devServer: {
+    contentBase: path.resolve(__dirname, 'src'),
+    open: true
+  },
   module: {
-    loaders: [
-      es6LoaderConfig
-    ]
-  }
+  rules: [es6LoaderConfig]
+}
 };
+
+module.exports = config;
