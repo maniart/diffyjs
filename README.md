@@ -1,4 +1,4 @@
-#Diffy.js
+# Diffy.js
 ### A dependency-free motion detection library for the browser.
 This library came out of my [browser-based interactive experiments](http://mani.io/portfolio/the-night/) and from the need to extract motion data from the webcam through the `getUserMedia` API. This is the cleaned up version of that code. Hat tip to [Soundstep](http://www.soundstep.com/blog/2012/03/22/javascript-motion-detection/) for the technique used in this library.
 
@@ -70,7 +70,7 @@ var diffy = Diffy.create({
 #### #create(options)
 Creates and returns a Diffy.js instance. It will request camera access as soon as the web page loads and will immediately begin executing the provided callback function.
 
-#####Arguments
+##### Arguments
 
 - **options** (object)
 	- **resolution** (object) [default: `{x: 10, y: 5}`] - defines the size of the output matrix
@@ -101,7 +101,7 @@ To run the demo included in the project:
 
 ## Tests
 
-As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm run test` from the project root. New releases will include better test coverage.
+As of right now, test coverage is [___*covers face*___] embarrassingly low but you can run them via `npm test` from the project root. New releases will include better test coverage.
 
 ## Contribute
 
