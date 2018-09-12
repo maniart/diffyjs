@@ -8,6 +8,9 @@ pids
 *.pid
 *.seed
 
+# MacOS
+.DS_Store
+
 # phantom file :O
 touch
 
