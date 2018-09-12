@@ -1,0 +1,11 @@
+
+[package]
+name = "diffyjs"
+version = "0.1.0"
+authors = ["maniart <mani.art@gmail.com>"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
