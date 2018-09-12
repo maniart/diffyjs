@@ -9,6 +9,12 @@ import path from 'path';
 const ENV = process.env.WEBPACK_ENV;
 
 /*
+  Define `mode`
+  See: https://webpack.js.org/concepts/mode/
+*/
+let mode;
+
+/*
   Define `entry` array.
   Based on `ENV`, we will conditionally extend it properly.
 */
@@ -29,7 +35,9 @@ const demoEntry = [
 */
 let es6LoaderConfig = {
   test: /\.js$/,
-  use: ['babel-loader']
+  use: [{
+    loader: 'babel-loader'
+  }]
 };
 const devAndDistEs6LoaderConfig = {
   include: path.resolve(__dirname, 'src')
@@ -68,39 +76,45 @@ const demoOutput = {
 let plugins = [];
 const devPlugins = [
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NoErrorsPlugin()
+  new webpack.NoEmitOnErrorsPlugin()
 ];
-const distPlugins = [
-  new webpack.optimize.UglifyJsPlugin({
-    compress: {
-      warnings: false
-    }
-  })
-];
+
+/* 
+  Define `Optimization` config
+*/
+let optimization = {};
 
 /*
   Read the `ENV` and construct webpack configurations accordingly.
 */
 switch(ENV) {
   case 'dev':
+    mode = 'development';
+    optimization = Object.assign(optimization, { minimize: false });
     entry = [...entry, ...devEntry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput, devOutput);
     plugins = [...plugins, ...devPlugins];
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
     break;
   case 'dist':
+    mode = 'production';
+    optimization = Object.assign(optimization, { minimize: true });
     entry = [...entry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput, distOutput);
-    plugins = [...plugins, ...distPlugins];
+    plugins = [...plugins];
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
     break;
   case 'demo':
+    mode = 'development';
+    optimization = Object.assign(optimization, { minimize: false });
     entry = [...entry, ...demoEntry];
     output = Object.assign(output, demoOutput);
     es6LoaderConfig = Object.assign(es6LoaderConfig, demoEs6LoaderConfig);
     break;
   default:
     // Use `dist` case by default
+    mode = 'production';
+    optimization = Object.assign(optimization, { minimize: true });
     entry = [...entry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput);
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
@@ -108,6 +122,8 @@ switch(ENV) {
 
 const config = {
   context: path.resolve(__dirname, 'src'),
+  mode,
+  optimization,
   entry,
   output,
   plugins,
