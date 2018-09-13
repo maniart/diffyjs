@@ -8,6 +8,11 @@ import { round } from './utils';
 
 let instanceExists = false;
 
+const wasmDiffer = import('./differ')
+  .then((differ) => {
+    differ.greet("Differ differ.");
+});
+
 export const create = ({ resolution, sensitivity, threshold, debug, onFrame, sourceDimensions, containerClassName }) => {
 
   if(!window) {
@@ -18,7 +23,7 @@ export const create = ({ resolution, sensitivity, threshold, debug, onFrame, sou
   }
 
   if(!('Worker' in window)) {
-    throw new Error(`
+    throw new Error(` 
       Diffy.js requires Web Workers.
       It looks like this environment does not support this feature. :(
       For more info, see: https://github.com/maniart/diffyjs/blob/master/README.md
