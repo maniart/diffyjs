@@ -61,9 +61,9 @@ export default class Diffy {
     _win.addEventListener('load', this.init.bind(this));
   }
 
-  toVideo(blob, videoEl) {
+  toVideo(stream, videoEl) {
     // piping blob to video element
-    videoEl.src = blob;
+    videoEl.srcObject = stream;
   }
 
   toCanvas(video, canvas) {
@@ -181,9 +181,9 @@ export default class Diffy {
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
     this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
 
-    this.captureFn(this.captureConfig).then((blob) => {
+    this.captureFn(this.captureConfig).then((stream) => {
       [this.rawCanvasEl, this.blendCanvasEl].forEach(this.mirror);
-      this.toVideo(blob, this.videoEl);
+      this.toVideo(stream, this.videoEl);
       this.loop();
     });
     this.initialized = true;
