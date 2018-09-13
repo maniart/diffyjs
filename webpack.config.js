@@ -97,7 +97,8 @@ switch(ENV) {
     es6LoaderConfig = Object.assign(es6LoaderConfig, devAndDistEs6LoaderConfig);
     break;
   case 'dist':
-    mode = 'production';
+    // mode = 'production';
+    mode = 'development';
     optimization = Object.assign(optimization, { minimize: true });
     entry = [...entry, ...devAndDistEntry];
     output = Object.assign(output, devAndDistOutput, distOutput);
