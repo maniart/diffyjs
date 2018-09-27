@@ -4,6 +4,7 @@ module.exports = {
   "parserOptions": {
     "sourceType": "module"
   },
+  "extends": ["fullstack", "prettier", "prettier/react"],
   "rules": {
     // require braces in arrow function body
     "arrow-body-style": 0,
