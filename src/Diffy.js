@@ -181,9 +181,9 @@ export default class Diffy {
     this.blendCanvasCtx = this.blendCanvasEl.getContext('2d');
     this.blendImageData = this.blendCanvasCtx.getImageData(0, 0, this.sourceWidth, this.sourceHeight);
 
-    this.captureFn(this.captureConfig).then((blob) => {
+    this.captureFn(this.captureConfig).then((stream) => {
       [this.rawCanvasEl, this.blendCanvasEl].forEach(this.mirror);
-      this.toVideo(blob, this.videoEl);
+      this.videoEl.srcObject = stream;
       this.loop();
     });
     this.initialized = true;

@@ -41,9 +41,7 @@ if(navigator.mediaDevices.getUserMedia === undefined) {
   returns objectUrl
  */
 const capture = (constraints) => {
-  return navigator.mediaDevices.getUserMedia(constraints)
-    .then((stream) => window.URL.createObjectURL(stream))
-    .catch(({ name, message }) => console.error(`${name} : ${message}`));
+  return navigator.mediaDevices.getUserMedia(constraints);
 }
 
 export default capture;
