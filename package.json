@@ -1,7 +1,7 @@
 {
   "name": "diffyjs",
-  "version": "1.3.5",
-  "description": "A dependency-free motion detection library for the browser",
+  "version": "2.0.0",
+  "description": "A high-performance motion detection library for the browser, powered by WebAssembly",
   "main": "dist/diffy.min.js",
   "scripts": {
     "clean": "rm -rf dist/ demo/dist",
@@ -9,13 +9,26 @@
     "demo": "run-s build serve:demo",
     "serve:dev": "export WEBPACK_ENV=dev; node_modules/.bin/babel-node tools/dev-server.js",
     "serve:demo": "node_modules/.bin/babel-node tools/demo-server.js",
-    "build": "run-s clean build:dist build:demo",
+    "build": "run-s clean build:wasm build:dist build:demo",
+    "build:wasm": "wasm-pack build --target web --out-dir pkg",
     "build:dist": "export WEBPACK_ENV=dist; node -r babel-register node_modules/.bin/webpack",
     "build:demo": "export WEBPACK_ENV=demo; node -r babel-register node_modules/.bin/webpack",
     "lint": "node_modules/.bin/esw webpack.config.* src tools demo/src ./webpack.config.js",
     "lint:watch": "npm run lint -- --watch",
     "test": "./node_modules/.bin/mocha --compilers js:babel-register"
   },
+  "keywords": [
+    "motion-detection", 
+    "webcam", 
+    "webassembly", 
+    "computer-vision", 
+    "javascript", 
+    "rust", 
+    "wasm", 
+    "browser", 
+    "getUserMedia",
+    "performance"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maniart/diffyjs.git"
