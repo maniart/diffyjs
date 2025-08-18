@@ -208,10 +208,9 @@ Please report issues [here](https://github.com/maniart/diffyjs/issues).
 ## Roadmap
 
 ### Future Enhancements
-- [ ] **True WebAssembly Integration**: Switch from optimized JS to pure WASM
+- [x] **True WebAssembly Integration**: Switch from optimized JS to pure WASM
 - [ ] **TypeScript Definitions**: Full type safety for better DX
 - [ ] **Advanced Algorithms**: Optical flow, background subtraction
-- [ ] **Multi-threading**: Web Workers + SharedArrayBuffer
 - [ ] **Framework Components**: React, Vue, Angular wrappers
 - [ ] **Mobile Optimization**: Enhanced mobile browser support
 
