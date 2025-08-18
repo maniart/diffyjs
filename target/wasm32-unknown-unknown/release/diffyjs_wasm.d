@@ -1,0 +1,1 @@
+/Users/mani/Workspace/diffyjs/target/wasm32-unknown-unknown/release/diffyjs_wasm.wasm: /Users/mani/Workspace/diffyjs/src/lib.rs /Users/mani/Workspace/diffyjs/src/matrix.rs /Users/mani/Workspace/diffyjs/src/motion_detector.rs /Users/mani/Workspace/diffyjs/src/utils.rs

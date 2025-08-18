@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "buildDate": "2025-08-18T03:34:59.832Z",
+  "features": [
+    "Optimized JavaScript motion detection",
+    "WASM-ready architecture",
+    "Improved performance vs v1.x",
+    "Backward compatible API"
+  ],
+  "files": {
+    "main": "diffy-wasm.min.js",
+    "wasm": "diffyjs_wasm_bg.wasm",
+    "bindings": "diffyjs_wasm.js"
+  }
+}
